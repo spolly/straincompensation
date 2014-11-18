@@ -784,106 +784,64 @@ function calculate_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-if handles.SubX < 1
-    if handles.SubY < 1
-        %eg AlGaAsP
-        aA=getMaterial(handles.SubIIIx, handles.SubVx); %AlAs
-        aB=getMaterial(handles.SubIII1mx, handles.SubVx); %GaAs
-        aC=getMaterial(handles.SubIIIx, handles.SubV1mx); %AlP
-        aD=getMaterial(handles.SubIII1mx, handles.SubV1mx); %GaP
-        [aSub,c11Sub,c12Sub]=calcMaterial(aA, aB, handles.SubX, aC, aD, handles.SubY);
-    else
-        %eg AlGaAs
-        aA=getMaterial(handles.SubIIIx, handles.SubVx);
-        aB=getMaterial(handles.SubIII1mx, handles.SubVx);
-        [aSub,c11Sub,c12Sub]=calcMaterial(aA, aB, handles.SubX, 0, 0, 0);
-    end
-elseif handles.SubY < 1
-    %eg GaAsP
-    aC=getMaterial(handles.SubIIIx, handles.SubVx);
-    aD=getMaterial(handles.SubIIIx, handles.SubV1mx);
-    [aSub,c11Sub,c12Sub]=calcMaterial(0, 0, 0, aC, aD, handles.SubY);
-else
-    %eg GaAs
-    [aSub,c11Sub,c12Sub]=getMaterial(handles.SubIIIx, handles.SubVx);
-end
 
-if handles.QDX < 1
-    if handles.QDY < 1
-        %eg AlGaAsP
-        bA=getMaterial(handles.QDIIIx, handles.QDVx); %AlAs
-        bB=getMaterial(handles.QDIII1mx, handles.QDVx); %GaAs
-        bC=getMaterial(handles.QDIIIx, handles.QDV1mx); %AlP
-        bD=getMaterial(handles.QDIII1mx, handles.QDV1mx); %GaP
-        [aQD,c11QD,c12QD]=calcMaterial(bA, bB, handles.QDX, bC, bD, handles.QDY);
-    else
-        %eg AlGaAs
-        bA=getMaterial(handles.QDIIIx, handles.QDVx);
-        bB=getMaterial(handles.QDIII1mx, handles.QDVx);
-        [aQD,c11QD,c12QD]=calcMaterial(bA, bB, handles.QDX, 0, 0, 0);
-    end
-elseif handles.QDY < 1
-    %eg GaAsP
-    bC=getMaterial(handles.QDIIIx, handles.QDVx);
-    bD=getMaterial(handles.QDIIIx, handles.QDV1mx);
-    [aQD,c11QD,c12QD]=calcMaterial(0, 0, 0, bC, bD, handles.QDY);
-else
-    %eg GaAs
-    [aQD,c11QD,c12QD]=getMaterial(handles.QDIIIx, handles.QDVx);
-end
+[subAC,subBC,subAD,subBD]=parseSelection(handles.SubIII, handles.SubV);
+[aSub,c11iSub,c12iSub,c11aSub,c12aSub]=calcMaterial(subAC, subAD, handles.SubX, subBC, subBD, handles.SubY);
 
-if handles.SCX < 1
-    if handles.SCY < 1
-        %eg AlGaAsP
-        cA=getMaterial(handles.SCIIIx, handles.SCVx); %AlAs
-        cB=getMaterial(handles.SCIII1mx, handles.SCVx); %GaAs
-        cC=getMaterial(handles.SCIIIx, handles.SCV1mx); %AlP
-        cD=getMaterial(handles.SCIII1mx, handles.SCV1mx); %GaP
-        [aSC,c11SC,c12SC]=calcMaterial(cA, cB, handles.SCX, cC, cD, handles.SCY);
-    else
-        %eg AlGaAs
-        cA=getMaterial(handles.SCIIIx, handles.SCVx);
-        cB=getMaterial(handles.SCIII1mx, handles.SCVx);
-        [aSC,c11SC,c12SC]=calcMaterial(cA, cB, handles.SCX, 0, 0, 0);
-    end
-elseif handles.SCY < 1
-    %eg GaAsP
-    cC=getMaterial(handles.SCIIIx, handles.SCVx);
-    cD=getMaterial(handles.SCIIIx, handles.SCV1mx);
-    [aSC,c11SC,c12SC]=calcMaterial(0, 0, 0, cC, cD, handles.SCY);
-else
-    %eg GaAs
-    [aSC,c11SC,c12SC]=getMaterial(handles.SCIIIx, handles.SCVx);
-end
-%[aQD, c11QD, c12QD]=getMaterial(handles.QDIIIx, handles.QDVx); 
-%[aSC, c11SC, c12SC]=getMaterial(handles.SCIIIx, handles.SCVx);
+[qdAC,qdBC,qdAD,qdBD]=parseSelection(handles.QDIII, handles.QDV);
+[aQD,c11iQD,c12iQD,c11aQD,c12aQD]=calcMaterial(qdAC, qdAD, handles.QDX, qdBC, qdBD, handles.QDY);
+
+[scAC,scBC,scAD,scBD]=parseSelection(handles.SCIII, handles.SCV);
+[aSC,c11iSC,c12iSC,c11aSC,c12aSC]=calcMaterial(scAC, scAD, handles.SCX, scBC, scBD, handles.SCY);
+
 
 QDDensity=handles.QDDensity * 1e-16; %Angstrom^-2 {5e-6 A^-2 = 5e10 cm^-2}
 QDDiameter=handles.QDDiameter * 10; %Angstrom
 QDHeight=handles.QDHeight * 10; %Angstrom
 WLThickness=handles.WLThickness * 10;
 
-ASC=c11SC + c12SC - (2*c12SC.^2./c11SC);
-AQD=c11QD + c12QD - (2*c12QD.^2./c11QD);
+%Interpolated stiffness ratios
+ASCi=c11iSC + c12iSC - (2*c12SC.^2./c11SC);
+AQDi=c11iQD + c12iQD - (2*c12QD.^2./c11QD);
 
-%Leonard QD as spherical cap
-vQDSphCap=pi.*QDHeight./6 .* (3 .*(QDDiameter/2).^2 + QDHeight.^2);
+%Adachi equation stiffness ratios
+ASCa=c11aSC + c12aSC - (2*c12SC.^2./c11SC);
+AQDa=c11aQD + c12aQD - (2*c12QD.^2./c11QD);
 
-%CET
-CETQD=QDHeight*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
+%QD Volume Calculations
+    %QD as spherical cap
+    vQDSphCap=pi.*QDHeight./6 .* (3 .*(QDDiameter/2).^2 + QDHeight.^2);
 
-%mCETCyl
-CETWL=WLThickness*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
-QDsigma=(QDDiameter/2)^2*pi; %QD base area
-vQDCyl=QDHeight*QDsigma;
-tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness;
-mCETcyl=(QDsigma*QDDensity)*CETQD + (1-QDsigma*QDDensity)*CETWL; %weighted SC thickness
+    %QD as cylinder
+    QDsigma=(QDDiameter/2)^2*pi; %QD base area
+    vQDCyl=QDHeight*QDsigma;
 
-%mCETSphere
-vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2;
-tQD=vQDOblSph*QDDensity; %volume of QD times QD density gives average thickness of QD per area
-tQDWL=WLThickness+tQD; %WL is treated as external to QD
-mCETsph=tQDWL*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
+    %QD as oblate hemispheroid
+    vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2;
+
+%Strain Compensation Calculations
+    %CET QD Thickness
+    CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+    CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+
+    %CET WL Thickness
+    CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+    CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+
+    %Effective coverage of QD material (Cylinder)
+    tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness;
+
+    %mCET Cylinder
+    mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %weighted SC thickness
+    mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %weighted SC thickness
+    
+    %Effective coverage of QD material (Oblate Hemispheroid)
+    tQD=vQDOblSph*QDDensity; %volume of QD times QD density gives average thickness of QD per area
+    tQDWL=WLThickness+tQD; %WL is treated as external to QD
+    
+    %mCET Oblate Hemispheroid
+    mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+    mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
 
 set(handles.QDVolSphCap,'String',num2str(vQDSphCap/1000,4)) %convert to nm^3 from A^3
 set(handles.QDVolCyl,'String',num2str(vQDCyl/1000,4)) %convert to nm^3 from A^3
@@ -911,86 +869,120 @@ set(handles.C12SC,'String',num2str(c12SC,4))
 
 guidata(hObject,handles)
 
-function [a,C11,C12]=getMaterial(III,V)
+function [AC,BC,AD,BD]=parseSelection(III,V)
+if length(III) > 2
+    if length(V) > 2
+        %quaternary A_(x)B_(1-x)C_(y)D_(1-y)
+        AC=strcat(III(1:2),V(1:2));
+        AD=strcat(III(1:2),V(7:8));
+        BC=strcat(III(7:8),V(1:2));
+        BD=strcat(III(7:8),V(7:8));
+    else
+        %ternary A_(x)B_(1-x)C
+        AC=strcat(III(1:2),V(1:2));
+        AD='';
+        BC=strcat(III(7:8),V(1:2));
+        BD='';
+    end
+else
+    if length(V) > 2
+        %ternary AC_(y)D_(1-y)
+        AC=strcat(III(1:2),V(1:2));
+        AD=strcat(III(1:2),V(7:8));
+        BC='';
+        BD='';
+    else
+        %binary AC
+        AC=strcat(III(1:2),V(1:2));
+        AD='';
+        BC='';
+        BD='';
+    end
+end
+
+function [a,C11,C12]=getMaterial(IIIV)
 %All material properties from:
 % [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters 
 % for III–V compound semiconductors and their alloys,” Journal of Applied 
 % Physics, vol. 89, no. 11, pp. 5815–5875, Jun. 2001.
  
-switch III
-    case 'Ga'
-        switch V
-            case 'As'
-                %GaAs
-                a=5.65325; %[Angstrom]
-                C11=1221; %[GPa]
-                C12=566; %[GPa]
-            case 'P'
-                %GaP
-                a=5.4505; %[Angstrom]
-                C11=1405; %[GPa]
-                C12=620.3; %[GPa]
-            case 'Sb'
-                %GaSb
-                a=6.0959; %[Angstrom]
-                C11=884.2; %[GPa]
-                C12=402.6; %[GPa]
-        end
-    case 'In'
-        switch V
-            case 'As'
-                %InAs
-                a=6.0583; %[Angstrom]
-                C11=832.9; %[GPa]
-                C12=452.6; %[GPa]
-            case 'P'
-                %InP
-                a=5.8697; %[Angstrom]
-                C11=1011; %[GPa]
-                C12=561; %[GPa]
-            case 'Sb' 
-                %InSb
-                a=6.4794; %[Angstrom]
-                C11=684.7; %[GPa]
-                C12=373.5; %[GPa]
-        end
-    case 'Al'
-        switch V
-            case 'As'
-                %AlAs
-                a=5.6611; %[Angstrom]
-                C11=1250; %[GPa]
-                C12=534; %[GPa]
-            case 'P'
-                %AlP
-                a=5.4672; %[Angstrom]
-                C11=1330; %[GPa]
-                C12=630; %[GPa]
-            case 'Sb'
-                %AlSb
-                a=6.1355; %[Angstrom]
-                C11=876.9; %[GPa]
-                C12=434.1; %[GPa]
-        end
+switch strtrim(IIIV)
+    case 'GaAs'
+        a=5.65325; %[Angstrom]
+        C11=1221; %[GPa]
+        C12=566; %[GPa]
+    case 'GaP'
+        a=5.4505; %[Angstrom]
+        C11=1405; %[GPa]
+        C12=620.3; %[GPa]
+    case 'GaSb'
+        a=6.0959; %[Angstrom]
+        C11=884.2; %[GPa]
+        C12=402.6; %[GPa]
+    case 'InAs'
+        a=6.0583; %[Angstrom]
+        C11=832.9; %[GPa]
+        C12=452.6; %[GPa]
+    case 'InP'
+        a=5.8697; %[Angstrom]
+        C11=1011; %[GPa]
+        C12=561; %[GPa]
+    case 'InSb'
+        a=6.4794; %[Angstrom]
+        C11=684.7; %[GPa]
+        C12=373.5; %[GPa]
+    case 'AlAs'
+        a=5.6611; %[Angstrom]
+        C11=1250; %[GPa]
+        C12=534; %[GPa]
+    case 'AlP'
+        a=5.4672; %[Angstrom]
+        C11=1330; %[GPa]
+        C12=630; %[GPa]
+    case 'AlSb'
+        a=6.1355; %[Angstrom]
+        C11=876.9; %[GPa]
+        C12=434.1; %[GPa]
 end
 
-function [a,C11,C12]=calcMaterial(ac,bc,x,ad,bd,y)
+function [a,C11i,C12i,C11a,C12a]=calcMaterial(AC,BC,x,AD,BD,y)
+%Funtion calcMaterial returns the calculated (or literature) lattice...
+%constant and elastic stiffness coefficients for a given material.
 if x > 0
     if y > 0
-        %eg AlGaAsP
-        a=(x*y)*ac+x*(1-y)*ad+(1-x)*y*bc+(1-x)*(1-y)*bd;
+        %eg AlGaAsSb
+        [aAC,C11AC,C12AC]=getMaterial(AC);
+        [aBC,C11BC,C12BC]=getMaterial(BC);
+        [aAD,C11AD,C12AD]=getMaterial(AD);
+        [aBD,C11BD,C12BD]=getMaterial(BD);
+        a=(x*y)*aAC+x*(1-y)*aAD+(1-x)*y*aBC+(1-x)*(1-y)*aBD;
+        C11i=(x*y)*C11AC+x*(1-y)*C11AD+(1-x)*y*C11BC+(1-x)*(1-y)*C11BD;
+        C12i=(x*y)*C12AC+x*(1-y)*C12AD+(1-x)*y*C12BC+(1-x)*(1-y)*C12BD;
     else
-        %eg AlGaP
-        a=(ac)*x + (bc)*(1-x);
+        %eg AlGaSb
+        [aAC,C11AC,C12AC]=getMaterial(AC);
+        [aBC,C11BC,C12BC]=getMaterial(BC);
+        a=(aAC)*x + (aBC)*(1-x);
+        C11i=(C11AC)*x + (C11BC)*(1-x);
+        C12i=(C12AC)*x + (C12BC)*(1-x);
     end
 else
-    %eg GaAsP
-    a=(ad)*y + (bd)*(1-y);
+    if y > 0
+        %eg GaAsP
+        [aAD,C11AD,C12AD]=getMaterial(AD);
+        [aBD,C11BD,C12BD]=getMaterial(BD);
+        a=(aAD)*x + (aBD)*(1-x);
+        C11i=(C11AD)*x + (C11BD)*(1-x);
+        C12i=(C12AD)*x + (C12BD)*(1-x);
+    else
+        %eg GaAs
+        [a,C11i,C12i]=getMaterial(AC);
+    end
 end
 %[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors. 
 %   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-C11=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
-C12=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]
+C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
+C12a=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]
 
 
 % --- Creates and returns a handle to the GUI figure. 

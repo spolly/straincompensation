@@ -3,7 +3,7 @@
     <tool>
         <title>Strain Compensation Thickness Calculator</title>
         <about>Strain compensation thickness calculator for quantum dots or quantum wells in a wide range of material systems.</about>
-        <command>octave --silent --eval infile='@driver',path('@tool',path),main</command>
+        <command>octave --silent --eval infile='@driver',path('@tool/.../bin',path),main</command>
     </tool>
     <input>
         <group id="Sub">

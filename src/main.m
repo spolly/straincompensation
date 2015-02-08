@@ -135,42 +135,51 @@ tQDWL=WLThickness+tQD; %WL is treated as external to QD
 mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
 mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
 
-%set(handles.QDVolSphCap,'String',num2str(vQDSphCap/1000,4)) %convert to nm^3 from A^3
-%set(handles.QDVolCyl,'String',num2str(vQDCyl/1000,4)) %convert to nm^3 from A^3
-%set(handles.QDVolOblSph,'String',num2str(vQDOblSph/1000,4)) %convert to nm^3 from A^3
-
-%set(handles.QDCoverageQW,'String',num2str(QDHeight/10,4)) %convert to nm^3 cm^-2 from A^3 cm^-2
-%set(handles.QDCoverageCyl,'String',num2str(tQDWLCyl/10,4))
-%set(handles.QDCoverageOblSph,'String',num2str(tQDWL/10,4))
-
-%set(handles.CET,'String',num2str(CETQD,4))
-%set(handles.MCETCyl,'String',num2str(mCETcyl,4))
-%set(handles.MCETSphere,'String',num2str(mCETsph,4))
-
-%set(handles.aSub,'String',num2str(aSub))
-%set(handles.aQD,'String',num2str(aQD))
-%set(handles.aSC,'String',num2str(aSC))
-
-%set(handles.C11Sub,'String',num2str(c11Sub,4))
-%set(handles.C11QD,'String',num2str(c11QD,4))
-%set(handles.C11SC,'String',num2str(c11SC,4))
-
-%set(handles.C12Sub,'String',num2str(c12Sub,4))
-%set(handles.C12QD,'String',num2str(c12QD,4))
-%set(handles.C12SC,'String',num2str(c12SC,4))
-
-%guidata(hObject,handles)
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Save output values back to Rappture
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % save output value for output.string(results)
-rpLibPutString(io,'output.log',strcat('Sub', strcat(sprintf(' %.3g',[aSub,c11iSub,c12iSub,c11aSub,c12aSub])), '\n'),1);
-rpLibPutString(io,'output.log',strcat('QD', sprintf(' %.3g',[aQD,c11iQD,c12iQD,c11aQD,c12aQD]), '\n'),1);
-rpLibPutString(io,'output.log',strcat('SC', sprintf(' %.3g',[aSC,c11iSC,c12iSC,c11aSC,c12aSC]), '\n'),1);
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Literature (i) or Calculated Values (a) -----------'),1);
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Material, lc[A], C11i[GPa], C12i[GPa], C11a[GPa], C12a[GPa],'),1);
+fmt = '%s, %.4g, %.4g, %.4g, %.4g, %.4g\n';
+rpLibPutString(io,'output.log',...
+               sprintf(fmt,'Sub',aSub,c11iSub,c12iSub,c11aSub,c12aSub),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt,'QD',aQD,c11iQD,c12iQD,c11aQD,c12aQD),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt,'SC',aSC,c11iSC,c12iSC,c11aSC,c12aSC),1);
+
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'QD Volumes [nm^3] -------------------------'),1);
+rpLibPutString(io,'output.log',sprintf('%s: %.4g\n','Sph. Cap',vQDSphCap/1000),1);
+rpLibPutString(io,'output.log',sprintf('%s: %.4g\n','Cylinder',vQDCyl/1000),1);
+rpLibPutString(io,'output.log',sprintf('%s: %.4g\n','Obl. Sph.',vQDOblSph/1000),1);
+
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Strain Compensation -----------------------'),1);
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Parameters Used, Required SC Thickness [nm], Effective QD+WL Thickness[nm^3 cm^-2] or [nm]]'),1);
+fmt = '%s, %0.3g, %0.3g\n';
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'CET (QD Height as QW)'),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Lit (i)', CETQDi, QDHeight/10),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Calc (a)', CETQDa, QDHeight/10),1);
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Modified CET (QD as Cylinder)'),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Lit (i)', mCETcyli, tQDWLCyl),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Calc (a)', mCETcyla, tQDWLCyl),1);
+rpLibPutString(io,'output.log',...
+               sprintf('%s\n', 'Modified CET (QD as Oblate-Hemispheroid)'),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Lit (i)', mCETsphi, tQDWL/10),1);
+rpLibPutString(io,'output.log',...
+               sprintf(fmt, 'Calc (a)', mCETspha, tQDWL/10),1);
 rpLibResult(io);
 quit;

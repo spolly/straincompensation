@@ -46,6 +46,7 @@
                         <label>In_(x)Ga_(1-x)</label>
                     </about>
                 </option>
+                <default>Ga</default>
             </choice>
             <choice id="SubV">
                 <about>
@@ -349,27 +350,5 @@
     <output>
         <log>
         </log>
-        <!-- <table id="litCalcVal"> -->
-        <!--     <about> -->
-        <!--         <label>Literature or Calculated Values</label> -->
-        <!--     </about> -->
-        <!--     <column id="material"><label/></column> -->
-        <!--     <column id="latConst"> -->
-        <!--         <label>a [A]</label> -->
-        <!--     </column> -->
-        <!--     <column id="C11i"> -->
-        <!--         <label>C11i [GPa]</label> -->
-        <!--     </column> -->
-        <!--     <column id="C12i"> -->
-        <!--         <label>C12i [GPa]</label> -->
-        <!--     </column> -->
-        <!--     <column id="C11a"> -->
-        <!--         <label>C11a [GPa]</label> -->
-        <!--     </column> -->
-        <!--     <column id="C12a"> -->
-        <!--         <label>C12a [GPa]</label> -->
-        <!--     </column> -->
-        <!--     <data></data> -->
-        <!-- </table> -->
     </output>
 </run>

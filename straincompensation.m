@@ -198,135 +198,6 @@ end
 
 guidata(hObject,handles)
 
-function [AC,BC,AD,BD]=parseSelection(III,V)
-if length(III) > 2
-    if length(V) > 2
-        %quaternary A_(x)B_(1-x)C_(y)D_(1-y)
-        AC=strcat(III(1:2),V(1:2));
-        BC=strcat(III(7:8),V(1:2));
-        if length(V) == 14 
-            %eg: AlGaAsSb (no P)
-            AD=strcat(III(1:2),V(7:8));
-            BD=strcat(III(7:8),V(7:8));
-        else
-            %eg: AlGaAsP
-            AD=strcat(III(1:2),V(7));
-            BD=strcat(III(7:8),V(7));
-        end
-    else
-        %ternary A_(x)B_(1-x)C
-        AC=strcat(III(1:2),V);
-        AD='';
-        BC=strcat(III(7:8),V);
-        BD='';
-    end
-else
-    if length(V) > 2
-        %ternary AC_(y)D_(1-y)
-        if length(V) == 14 
-            %eg: GaAsSb (no P)
-            AC=strcat(III,V(1:2));
-            AD=strcat(III,V(7:8));
-        else
-            %eg: GaAsP
-            AC=strcat(III,V(1:2));
-            AD=strcat(III,V(7));
-        end
-        BC='';
-        BD='';
-    else
-        %binary AC
-        AC=strcat(III,V);
-        AD='';
-        BC='';
-        BD='';
-    end
-end
-
-function [a,C11,C12]=getMaterial(IIIV)
-%All material properties from:
-% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters 
-% for III–V compound semiconductors and their alloys,” Journal of Applied 
-% Physics, vol. 89, no. 11, pp. 5815–5875, Jun. 2001.
- 
-switch IIIV
-    case 'GaAs'
-        a=5.65325; %[Angstrom]
-        C11=1221; %[GPa]
-        C12=566; %[GPa]
-    case 'GaP'
-        a=5.4505; %[Angstrom]
-        C11=1405; %[GPa]
-        C12=620.3; %[GPa]
-    case 'GaSb'
-        a=6.0959; %[Angstrom]
-        C11=884.2; %[GPa]
-        C12=402.6; %[GPa]
-    case 'InAs'
-        a=6.0583; %[Angstrom]
-        C11=832.9; %[GPa]
-        C12=452.6; %[GPa]
-    case 'InP'
-        a=5.8697; %[Angstrom]
-        C11=1011; %[GPa]
-        C12=561; %[GPa]
-    case 'InSb'
-        a=6.4794; %[Angstrom]
-        C11=684.7; %[GPa]
-        C12=373.5; %[GPa]
-    case 'AlAs'
-        a=5.6611; %[Angstrom]
-        C11=1250; %[GPa]
-        C12=534; %[GPa]
-    case 'AlP'
-        a=5.4672; %[Angstrom]
-        C11=1330; %[GPa]
-        C12=630; %[GPa]
-    case 'AlSb'
-        a=6.1355; %[Angstrom]
-        C11=876.9; %[GPa]
-        C12=434.1; %[GPa]
-end
-
-function [a,C11i,C12i,C11a,C12a]=calcMaterial(AC,AD,x,BC,BD,y)
-%Funtion calcMaterial returns the calculated (or literature) lattice...
-%constant and elastic stiffness coefficients for a given material.
-if x < 1
-    if y < 1
-        %eg AlGaAsSb
-        [aAC,C11AC,C12AC]=getMaterial(AC);
-        [aBC,C11BC,C12BC]=getMaterial(BC);
-        [aAC,C11AC,C12AC]=getMaterial(AD);
-        [aAD,C11AD,C12AD]=getMaterial(BD);
-        a=(x*y)*aAC+x*(1-y)*aAC+(1-x)*y*aBC+(1-x)*(1-y)*aAD;
-        C11i=(x*y)*C11AC+x*(1-y)*C11AC+(1-x)*y*C11BC+(1-x)*(1-y)*C11AD;
-        C12i=(x*y)*C12AC+x*(1-y)*C12AC+(1-x)*y*C12BC+(1-x)*(1-y)*C12AD;
-    else
-        %eg AlGaSb
-        [aAC,C11AC,C12AC]=getMaterial(AC);
-        [aBC,C11BC,C12BC]=getMaterial(BC);
-        a=(aAC)*x + (aBC)*(1-x);
-        C11i=(C11AC)*x + (C11BC)*(1-x);
-        C12i=(C12AC)*x + (C12BC)*(1-x);
-    end
-else
-    if y < 1
-        %eg GaAsP
-        [aAC,C11AC,C12AC]=getMaterial(AC);
-        [aAD,C11AD,C12AD]=getMaterial(AD);
-        a=(aAC)*x + (aAD)*(1-x);
-        C11i=(C11AC)*x + (C11AD)*(1-x);
-        C12i=(C12AC)*x + (C12AD)*(1-x);
-    else
-        %eg GaAs
-        [a,C11i,C12i]=getMaterial(AC);
-    end
-end
-%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors. 
-%   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
-C12a=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]
-
 function QDDiameter_Callback(hObject, eventdata, handles)
 % hObject    handle to QDDiameter (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1834,14 +1705,14 @@ h87 = uicontrol(...
 appdata = [];
 appdata.lastValidTag = 'text80';
 
-h88 = uicontrol(...
-'Parent',h1,...
-'Units','characters',...
-'Position',[62.6 0.384615384615385 37.8 1.07692307692308],...
-'String','github.com/spolly/straincompensation',...
-'Style','text',...
-'Tag','text80',...
-'CreateFcn', {@local_CreateFcn, blanks(0), appdata} );
+% h88 = uicontrol(...
+% 'Parent',h1,...
+% 'Units','characters',...
+% 'Position',[62.6 0.384615384615385 37.8 1.07692307692308],...
+% 'String','github.com/spolly/straincompensation',...
+% 'Style','text',...
+% 'Tag','text80',...
+% 'CreateFcn', {@local_CreateFcn, blanks(0), appdata} );
 
 
 hsingleton = h1;

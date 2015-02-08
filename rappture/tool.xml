@@ -1,0 +1,394 @@
+<?xml version="1.0"?>
+<run>
+    <tool>
+        <title>Strain Compensation Thickness Calculator</title>
+        <about>Strain compensation thickness calculator for quantum dots or quantum wells in a wide range of material systems.</about>
+        <command>octave --silent --eval infile='@driver',path('@tool',path),main</command>
+    </tool>
+    <input>
+        <group id="Sub">
+            <about>
+                <label>Substrate Material</label>
+                <description>The material of the substrate--the material that is strain neutral in this system.</description>
+            </about>
+            <choice id="SubIII">
+                <about>
+                    <label>Substrate (III)</label>
+                    <description>Substrate Group III Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>Al</label>
+                    </about>
+                    <value>1</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>Ga</label>
+                    </about>
+                    <value>2</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>In</label>
+                    </about>
+                    <value>3</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>Al_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>4</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>Al_(x)In_(1-x)</label>
+                    </about>
+                    <value>5</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>In_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>6</value>
+                </option>
+                <default>Ga</default>
+            </choice>
+            <choice id="SubV">
+                <about>
+                    <label>Substrate (V)</label>
+                    <description>Substrate Group V Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>P</label>
+                    </about>
+                    <value>7</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>As</label>
+                    </about>
+                    <value>8</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>Sb</label>
+                    </about>
+                    <value>9</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>As_(y)P_(1-y)</label>
+                    </about>
+                    <value>10</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>As_(y)Sb_(1-y)</label>
+                    </about>
+                    <value>11</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>Sb_(y)P_(1-y)</label>
+                    </about>
+                    <value>12</value>
+                </option>
+                <default>As</default>
+            </choice>
+            <number id="Subx">
+                <about>
+                    <label>x</label>
+                    <description>Substrate x</description>
+                    <enable>input.group(Sub).choice(SubIII) &gt; 3</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+            <number id="Suby">
+                <about>
+                    <label>y</label>
+                    <description>Substrate y</description>
+                    <enable>input.group(Sub).choice(SubV) &gt; 9</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+        </group>
+        <group id="QD">
+            <about>
+                <label>Quantum Dot Material</label>
+                <description>The material of the quantum dot (or quantum well)--the material that is in compressive strain to the substrate.</description>
+            </about>
+            <choice id="QDIII">
+                <about>
+                    <label>QD (III)</label>
+                    <description>Quantum Dot Group III Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>Al</label>
+                    </about>
+                    <value>1</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>Ga</label>
+                    </about>
+                    <value>2</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>In</label>
+                    </about>
+                    <value>3</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>Al_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>4</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>Al_(x)In_(1-x)</label>
+                    </about>
+                    <value>5</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>In_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>6</value>
+                </option>
+                <default>In</default>
+            </choice>
+            <choice id="QDV">
+                <about>
+                    <label>QD (V)</label>
+                    <description>Quantum Dot Group V Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>P</label>
+                    </about>
+                    <value>7</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>As</label>
+                    </about>
+                    <value>8</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>Sb</label>
+                    </about>
+                    <value>9</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>As_(y)P_(1-y)</label>
+                    </about>
+                    <value>10</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>As_(y)Sb_(1-y)</label>
+                    </about>
+                    <value>11</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>Sb_(y)P_(1-y)</label>
+                    </about>
+                    <value>12</value>
+                </option>
+                <default>As</default>
+            </choice>
+            <number id="QDx">
+                <about>
+                    <label>x</label>
+                    <description>Quantum Dot x</description>
+                    <enable>input.group(QD).choice(QDIII) &gt; 3</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+            <number id="QDy">
+                <about>
+                    <label>y</label>
+                    <description>Quantum Dot y</description>
+                    <enable>input.group(QD).choice(QDV) &gt; 9</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+        </group>
+        <group id="SC">
+            <about>
+                <label>Strain Compensation Material</label>
+                <description>The material of the strain compensation material--the material that is in tensile strain to the substrate.</description>
+            </about>
+            <choice id="SCIII">
+                <about>
+                    <label>SC (III)</label>
+                    <description>Strain Compensation Group III Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>Al</label>
+                    </about>
+                    <value>1</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>Ga</label>
+                    </about>
+                    <value>2</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>In</label>
+                    </about>
+                    <value>3</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>Al_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>4</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>Al_(x)In_(1-x)</label>
+                    </about>
+                    <value>5</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>In_(x)Ga_(1-x)</label>
+                    </about>
+                    <value>6</value>
+                </option>
+                <default>Ga</default>
+            </choice>
+            <choice id="SCV">
+                <about>
+                    <label>SC (V)</label>
+                    <description>Strain Compensation Group V Material(s)</description>
+                </about>
+                <option id="1">
+                    <about>
+                        <label>P</label>
+                    </about>
+                    <value>7</value>
+                </option>
+                <option id="2">
+                    <about>
+                        <label>As</label>
+                    </about>
+                    <value>8</value>
+                </option>
+                <option id="3">
+                    <about>
+                        <label>Sb</label>
+                    </about>
+                    <value>9</value>
+                </option>
+                <option id="4">
+                    <about>
+                        <label>As_(y)P_(1-y)</label>
+                    </about>
+                    <value>10</value>
+                </option>
+                <option id="5">
+                    <about>
+                        <label>As_(y)Sb_(1-y)</label>
+                    </about>
+                    <value>11</value>
+                </option>
+                <option id="6">
+                    <about>
+                        <label>Sb_(y)P_(1-y)</label>
+                    </about>
+                    <value>12</value>
+                </option>
+                <default>P</default>
+            </choice>
+            <number id="SCx">
+                <about>
+                    <label>x</label>
+                    <description>Strain Compensation x</description>
+                    <enable>input.group(SC).choice(SCIII) &gt; 3</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+            <number id="SCy">
+                <about>
+                    <label>y</label>
+                    <description>Strain Compensation y</description>
+                    <enable>input.group(SC).choice(SCV) &gt; 9</enable>
+                </about>
+                <default>1</default>
+                <min>0.001</min>
+                <max>1</max>
+            </number>
+        </group>
+        <number id="QDDia">
+            <about>
+                <label>QD Diameter</label>
+                <description>Diameter of the QDs in the system.</description>
+            </about>
+            <default>25</default>
+            <units>nm</units>
+            <min>0.01</min>
+            <max>1000</max>
+        </number>
+        <number id="QDH">
+            <about>
+                <label>QD Height (or QW Thickness)</label>
+                <description>Height of the QDs in the system, or if only concerned about quantum wells, the thickness of the QW layer.</description>
+            </about>
+            <default>2</default>
+            <units>nm</units>
+            <min>0.01</min>
+            <max>1000</max>
+        </number>
+        <number id="QDDen">
+            <about>
+                <label>QD Density</label>
+                <description>Density of QDs in the system.</description>
+            </about>
+            <default>5e10</default>
+            <units>cm-2</units>
+            <min>1e5</min>
+            <max>1e15</max>
+        </number>
+        <number id="WL">
+            <about>
+                <label>Wetting Layer Thickness</label>
+                <description>Thickness of the QD wetting layer.</description>
+            </about>
+            <default>1</default>
+            <units>nm</units>
+            <min>0.01</min>
+            <max>1000</max>
+        </number>
+    </input>
+    <output>
+        <string id="results">
+            <about>
+                <label>Results</label>
+                <description>Output of the system.</description>
+            </about>
+        </string>
+    </output>
+</run>

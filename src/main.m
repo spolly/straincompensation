@@ -508,10 +508,10 @@ results=num2str(mCETsph,4);
 
 function [a,C11,C12]=getMaterial(III,V)
 %All material properties from:
-% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters 
-% for III–V compound semiconductors and their alloys,” Journal of Applied 
+% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters
+% for III–V compound semiconductors and their alloys,” Journal of Applied
 % Physics, vol. 89, no. 11, pp. 5815–5875, Jun. 2001.
- 
+
 	switch III
  		case 1 %'Al'
 			switch V
@@ -525,7 +525,7 @@ function [a,C11,C12]=getMaterial(III,V)
 					a=5.6611; %[Angstrom]
 					C11=1250; %[GPa]
 					C12=534; %[GPa]
-				    
+
 				    case 9 %'Sb'
 					%AlSb
 					a=6.1355; %[Angstrom]
@@ -562,13 +562,13 @@ function [a,C11,C12]=getMaterial(III,V)
 				a=5.8697; %[Angstrom]
 				C11=1011; %[GPa]
 				C12=561; %[GPa]
-			    case 9 %'Sb' 
+			    case 9 %'Sb'
 				%InSb
 				a=6.4794; %[Angstrom]
 				C11=684.7; %[GPa]
 				C12=373.5; %[GPa]
 			end
-	   
+
 		end
 endfunction
 
@@ -585,9 +585,9 @@ function [a,C11,C12]=calcMaterial(ac,bc,x,ad,bd,y)
 	    %eg GaAsP
 	    a=(ad)*y + (bd)*(1-y);
 	end
-	%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors. 
+	%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors.
 	%   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-	C11=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
+	C11=exp((-4.16629.*log(a)+9.70098))*100; %[GPa]
 	C12=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]
 endfunction
 

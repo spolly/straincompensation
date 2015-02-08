@@ -13,7 +13,7 @@
 \usepackage[affil-it]{authblk}
 \usepackage[mincitenames=1,
 maxcitenames=1,
-url=false, 
+url=false,
 doi=true,
 backend=biber,
 style=IEEE]{biblatex}
@@ -27,10 +27,10 @@ style=IEEE]{biblatex}
 
 \title{Strain Compensation Thickness Calculator Distribution Notes}
 
-\author{Stephen J. Polly 
+\author{Stephen J. Polly
 	\thanks{email: \texttt{\href{mailto:sjp5958@rit.edu}{sjp5958@rit.edu}}}}
 	\affil{Rochester Institute of Technology, Rochester, NY 14623}
-%\email{sjp5958@rit.edu} 
+%\email{sjp5958@rit.edu}
 
 
 %\affiliation{Rochester Institute of Technology -- Rochester, New York 14623 USA}
@@ -64,10 +64,10 @@ The program is divided into four sections, with some attribution at the bottom. 
 \end{figure}
 
 \subsection{Material Systems}
-Here the user selects the type and composition for the \texttt{Substrate}, \texttt{Quantum Dot}, and \texttt{Strain Compensation} material systems. All layers are set to GaAs by default. To select, for example, In$_{0.9}$Ga$_{0.1}$As QDs and a GaAs$_{0.17}$P$_{0.83}$ strain compensation (SC) layer: the user would select as shown in Figure \ref{fig:scexemat}. Both methods of selecting material systems shown will produce the same results. 
+Here the user selects the type and composition for the \texttt{Substrate}, \texttt{Quantum Dot}, and \texttt{Strain Compensation} material systems. All layers are set to GaAs by default. To select, for example, In$_{0.9}$Ga$_{0.1}$As QDs and a GaAs$_{0.17}$P$_{0.83}$ strain compensation (SC) layer: the user would select as shown in Figure \ref{fig:scexemat}. Both methods of selecting material systems shown will produce the same results.
 
 \subsection{Literature or Calculated Values}
-This section shows the lattice constant and elastic stiffness constants for the substrate, QD, and SC materials selected in the \texttt{Material System} box. If the materials are binary (e.g.: GaAs, InAs, etc.) the material parameters are taken from \citeauthor{vurgaftman_band_2001} \cite{vurgaftman_band_2001}. If they are ternaries or quaternaries, these values are calculated via methods described in Sections \ref{latticeconstant} and \ref{stiffnessconstant} for lattice constant and elastic stiffness constant, respectively. 
+This section shows the lattice constant and elastic stiffness constants for the substrate, QD, and SC materials selected in the \texttt{Material System} box. If the materials are binary (e.g.: GaAs, InAs, etc.) the material parameters are taken from \citeauthor{vurgaftman_band_2001} \cite{vurgaftman_band_2001}. If they are ternaries or quaternaries, these values are calculated via methods described in Sections \ref{latticeconstant} and \ref{stiffnessconstant} for lattice constant and elastic stiffness constant, respectively.
 \begin{figure}
 	\includegraphics[width=0.85\linewidth]{scexemat}
 	\centering
@@ -76,7 +76,7 @@ This section shows the lattice constant and elastic stiffness constants for the 
 \end{figure}
 
 \subsection{QD Properties}
-In this box, the user inputs QD parameters: \texttt{QD Diameter} [nm], \texttt{QD Height} [nm], \texttt{QD Density} [cm$^{-2}$], and \texttt{WL Thickness} [nm]. 
+In this box, the user inputs QD parameters: \texttt{QD Diameter} [nm], \texttt{QD Height} [nm], \texttt{QD Density} [cm$^{-2}$], and \texttt{WL Thickness} [nm].
 
 This box also displays the volume of a single QD in [nm$^{3}$], based on the parameters entered, using three methods to define the QD shape: Spherical Cap, Cylinder, and Oblate-Hemispheroid. The first, \texttt{QD Vol (Sph. Cap.)} is shown here only for interest, and is not used anywhere else in the software. The other two volumes, \texttt{QD Vol (Cylinder)} and \texttt{QD Vol (Obl. Sph.)} are used in the calculation of necessary strain compensation material thicknesses using the respective Modified CET methods, described in Section \ref{straincomp}. A comparison of these QD volume methods is discussed in Section \ref{qdvolcompare}.
 
@@ -128,14 +128,14 @@ The \(C_{11}\) and \(C_{12}\) fit \citeauthor{adachi_properties_2005} uses inclu
 \end{figure}
 
 \begin{table}
-	\caption{Equation \ref{eq:adachistiffness} Coefficients from \citeauthor{adachi_properties_2005} \cite{adachi_properties_2005} and This Work} 
+	\caption{Equation \ref{eq:adachistiffness} Coefficients from \citeauthor{adachi_properties_2005} \cite{adachi_properties_2005} and This Work}
 	\centering
-	\begin{tabular}{c c c c c} 
-		\hline\hline 
-		$C_{ij}$ & \(\alpha\) (\citeauthor{adachi_properties_2005}) & \(\alpha\) (This Work) & \(\beta\) (\citeauthor{adachi_properties_2005}) & \(\beta\) (This Work) \\ % [0.5ex] % inserts table 
+	\begin{tabular}{c c c c c}
+		\hline\hline
+		$C_{ij}$ & \(\alpha\) (\citeauthor{adachi_properties_2005}) & \(\alpha\) (This Work) & \(\beta\) (\citeauthor{adachi_properties_2005}) & \(\beta\) (This Work) \\ % [0.5ex] % inserts table
 		%heading
 		\hline % inserts single horizontal line
-		\(C_{11}\) & -4.59 & -4.166 & 10.33 & 9.701 \\ 
+		\(C_{11}\) & -4.59 & -4.166 & 10.33 & 9.701 \\
 		\(C_{12}\) & -2.54 & -3.105 & 6.07 & 7.104 \\ %[1ex] % [1ex] adds vertical space
 		\hline
 	\end{tabular}

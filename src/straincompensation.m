@@ -55,14 +55,14 @@ function straincompensation_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for straincompensation
 handles.output = hObject;
-% 
+%
 handles.SubX=1;
 handles.SubY=1;
 handles.QDX=1;
 handles.QDY=1;
 handles.SCX=1;
 handles.SCY=1;
-set(handles.interpolate,'Value',1); 
+set(handles.interpolate,'Value',1);
 
 %These values also need to be changed in their respective GUI
 %initializations. Search for '%@@@' to find instances
@@ -148,16 +148,16 @@ AQDa=c11aQD + c12aQD - (2*c12aQD.^2./c11aQD);
     %mCET Cylinder
     mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %weighted SC thickness
     mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %weighted SC thickness
-    
+
     %Effective coverage of QD material (Oblate Hemispheroid)
     tQD=vQDOblSph*QDDensity; %volume of QD times QD density gives average thickness of QD per area
     tQDWL=WLThickness+tQD; %WL is treated as external to QD
-    
+
     %mCET Oblate Hemispheroid
     mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
     mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
 
-    
+
 set(handles.QDVolSphCap,'String',num2str(vQDSphCap/1000,4)) %convert to nm^3 from A^3
 set(handles.QDVolCyl,'String',num2str(vQDCyl/1000,4)) %convert to nm^3 from A^3
 set(handles.QDVolOblSph,'String',num2str(vQDOblSph/1000,4)) %convert to nm^3 from A^3
@@ -274,17 +274,17 @@ function SubIII_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'Al' 
+case 'Al'
 	handles.SubIII = 'Al';
-case 'Ga' 
+case 'Ga'
 	handles.SubIII = 'Ga';
-case 'In' 
+case 'In'
 	handles.SubIII = 'In';
-case 'Al_(x)Ga_(1-x)' 
+case 'Al_(x)Ga_(1-x)'
 	handles.SubIII = 'Al_(x)Ga_(1-x)';
-case 'Al_(x)In_(1-x)' 
+case 'Al_(x)In_(1-x)'
 	handles.SubIII = 'Al_(x)In_(1-x)';
-case 'In_(x)Ga_(1-x)' 
+case 'In_(x)Ga_(1-x)'
 	handles.SubIII = 'In_(x)Ga_(1-x)';
 end
 guidata(hObject,handles)
@@ -306,17 +306,17 @@ function SubV_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'P' 
+case 'P'
 	handles.SubV = 'P';
-case 'As' 
+case 'As'
 	handles.SubV = 'As';
-case 'Sb' 
+case 'Sb'
 	handles.SubV = 'In';
-case 'As_(y)P_(1-y)' 
+case 'As_(y)P_(1-y)'
 	handles.SubV = 'As_(y)P_(1-y)';
-case 'As_(y)Sb_(1-y)' 
+case 'As_(y)Sb_(1-y)'
 	handles.SubV = 'As_(y)Sb_(1-y)';
-case 'Sb_(y)P_(1-y)' 
+case 'Sb_(y)P_(1-y)'
 	handles.SubV = 'Sb_(y)P_(1-y)';
 end
 guidata(hObject,handles)
@@ -338,17 +338,17 @@ function QDIII_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'Al' 
+case 'Al'
 	handles.QDIII = 'Al';
-case 'Ga' 
+case 'Ga'
 	handles.QDIII = 'Ga';
-case 'In' 
+case 'In'
 	handles.QDIII = 'In';
-case 'Al_(x)Ga_(1-x)' 
+case 'Al_(x)Ga_(1-x)'
 	handles.QDIII = 'Al_(x)Ga_(1-x)';
-case 'Al_(x)In_(1-x)' 
+case 'Al_(x)In_(1-x)'
 	handles.QDIII = 'Al_(x)In_(1-x)';
-case 'In_(x)Ga_(1-x)' 
+case 'In_(x)Ga_(1-x)'
 	handles.QDIII = 'In_(x)Ga_(1-x)';
 end
 guidata(hObject,handles)
@@ -370,17 +370,17 @@ function QDV_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'P' 
+case 'P'
 	handles.QDV = 'P';
-case 'As' 
+case 'As'
 	handles.QdV = 'As';
-case 'Sb' 
+case 'Sb'
 	handles.QDV = 'Sb';
-case 'As_(y)P_(1-y)' 
+case 'As_(y)P_(1-y)'
 	handles.QDV = 'As_(y)P_(1-y)';
-case 'As_(y)Sb_(1-y)' 
+case 'As_(y)Sb_(1-y)'
 	handles.QDV = 'As_(y)Sb_(1-y)';
-case 'Sb_(y)P_(1-y)' 
+case 'Sb_(y)P_(1-y)'
 	handles.QdV = 'Sb_(y)P_(1-y)';
 end
 guidata(hObject,handles)
@@ -402,17 +402,17 @@ function SCIII_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'Al' 
+case 'Al'
 	handles.SCIII = 'Al';
-case 'Ga' 
+case 'Ga'
 	handles.SCIII = 'Ga';
-case 'In' 
+case 'In'
 	handles.SCIII = 'In';
-case 'Al_(x)Ga_(1-x)' 
+case 'Al_(x)Ga_(1-x)'
 	handles.SCIII = 'Al_(x)Ga_(1-x)';
-case 'Al_(x)In_(1-x)' 
+case 'Al_(x)In_(1-x)'
 	handles.SCIII = 'Al_(x)In_(1-x)';
-case 'In_(x)Ga_(1-x)' 
+case 'In_(x)Ga_(1-x)'
 	handles.SCIII = 'In_(x)Ga_(1-x)';
 end
 guidata(hObject,handles)
@@ -434,17 +434,17 @@ function SCV_Callback(hObject, eventdata, handles)
 contents = cellstr(get(hObject,'String'));
 selected = contents{get(hObject,'Value')};
 switch selected;
-case 'P' 
+case 'P'
 	handles.SCV = 'P';
-case 'As' 
+case 'As'
 	handles.SCV = 'As';
-case 'Sb' 
+case 'Sb'
 	handles.SCV = 'In';
-case 'As_(y)P_(1-y)' 
+case 'As_(y)P_(1-y)'
 	handles.SCV = 'As_(y)P_(1-y)';
-case 'As_(y)Sb_(1-y)' 
+case 'As_(y)Sb_(1-y)'
 	handles.SCV = 'As_(y)Sb_(1-y)';
-case 'Sb_(y)P_(1-y)' 
+case 'Sb_(y)P_(1-y)'
 	handles.SCV = 'Sb_(y)P_(1-y)';
 end
 guidata(hObject,handles)
@@ -573,7 +573,7 @@ guidata(hObject,handles)
 calculate_Callback(hObject, eventdata, handles)
 
 
-% --- Creates and returns a handle to the GUI figure. 
+% --- Creates and returns a handle to the GUI figure.
 function h1 = straincompensation_LayoutFcn(policy)
 % policy - create a new figure or use a singleton. 'new' or 'reuse'.
 
@@ -1718,7 +1718,7 @@ appdata.lastValidTag = 'text80';
 hsingleton = h1;
 
 
-% --- Set application data first then calling the CreateFcn. 
+% --- Set application data first then calling the CreateFcn.
 function local_CreateFcn(hObject, eventdata, createfcn, appdata)
 
 if ~isempty(appdata)
@@ -1792,22 +1792,22 @@ if ~gui_Create
         while ~isempty(fig) && ~ishghandle(fig,'figure')
             fig = get(fig,'parent');
         end
-        
+
         designEval = isappdata(0,'CreatingGUIDEFigure') || isprop(fig,'__GUIDEFigure');
     end
-        
+
     if designEval
         beforeChildren = findall(fig);
     end
-    
+
     % evaluate the callback now
     varargin{1} = gui_State.gui_Callback;
     if nargout
         [varargout{1:nargout}] = feval(varargin{:});
-    else       
+    else
         feval(varargin{:});
     end
-    
+
     % Set serializable of objects created in the above callback to off in
     % design time. Need to check whether figure handle is still valid in
     % case the figure is deleted during the callback dispatching.
@@ -1843,16 +1843,16 @@ else
             end
         end
     end
-    
+
     % Open fig file with stored settings.  Note: This executes all component
     % specific CreateFunctions with an empty HANDLES structure.
 
-    
+
     % Do feval on layout code in m-file if it exists
     gui_Exported = ~isempty(gui_State.gui_LayoutFcn);
     % this application data is used to indicate the running mode of a GUIDE
     % GUI to distinguish it from the design mode of the GUI in GUIDE. it is
-    % only used by actxproxy at this time.   
+    % only used by actxproxy at this time.
     setappdata(0,genvarname(['OpenGuiWhenRunning_', gui_State.gui_Name]),1);
     if gui_Exported
         gui_hFigure = feval(gui_State.gui_LayoutFcn, gui_SingletonOpt);
@@ -1935,8 +1935,8 @@ else
     if isscalar(gui_hFigure) && ishghandle(gui_hFigure)
         % Handle the default callbacks of predefined toolbar tools in this
         % GUI, if any
-        guidemfile('restoreToolbarToolPredefinedCallback',gui_hFigure); 
-        
+        guidemfile('restoreToolbarToolPredefinedCallback',gui_hFigure);
+
         % Update handle visibility
         set(gui_hFigure,'HandleVisibility', gui_HandleVisibility);
 
@@ -1949,7 +1949,7 @@ else
         end
         if strcmpi(get(gui_hFigure, 'Visible'), 'on')
             figure(gui_hFigure);
-            
+
             if gui_Options.singleton
                 setappdata(gui_hFigure,'GUIOnScreen', 1);
             end
@@ -1995,14 +1995,14 @@ if nargin('openfig') == 2
     gui_hFigure = openfig(name, singleton);
     set(0,'defaultFigureVisible',gui_OldDefaultVisible);
 else
-    gui_hFigure = openfig(name, singleton, visible);  
+    gui_hFigure = openfig(name, singleton, visible);
     %workaround for CreateFcn not called to create ActiveX
     if feature('HGUsingMATLABClasses')
-        peers=findobj(findall(allchild(gui_hFigure)),'type','uicontrol','style','text');    
+        peers=findobj(findall(allchild(gui_hFigure)),'type','uicontrol','style','text');
         for i=1:length(peers)
             if isappdata(peers(i),'Control')
                 actxproxy(peers(i));
-            end            
+            end
         end
     end
 end
@@ -2028,5 +2028,3 @@ try
 catch
     result = false;
 end
-
-

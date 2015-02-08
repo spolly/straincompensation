@@ -32,7 +32,7 @@ else
         [a,C11i,C12i]=getMaterial(AC);
     end
 end
-%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors. 
+%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors.
 %   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
+C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa]
 C12a=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]

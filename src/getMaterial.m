@@ -1,9 +1,9 @@
 function [a,C11,C12]=getMaterial(IIIV)
 %All material properties from:
-% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters 
-% for III–V compound semiconductors and their alloys,” Journal of Applied 
-% Physics, vol. 89, no. 11, pp. 5815–5875, Jun. 2001.
- 
+% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, "Band parameters
+% for III-V compound semiconductors and their alloys," Journal of Applied
+% Physics, vol. 89, no. 11, pp. 5815--5875, Jun. 2001.
+
 switch IIIV
     case 'GaAs'
         a=5.65325; %[Angstrom]

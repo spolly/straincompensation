@@ -3,7 +3,7 @@
     <tool>
         <title>Strain Compensation Thickness Calculator</title>
         <about>Strain compensation thickness calculator for quantum dots or quantum wells in a wide range of material systems.</about>
-        <command>octave --silent --eval infile='@driver',path('@tool/.../bin',path),main</command>
+        <command>octave --silent --eval infile='@driver',path('@tool/../bin',path),main</command>
     </tool>
     <input>
         <group id="Sub">
@@ -347,11 +347,29 @@
         </number>
     </input>
     <output>
-        <string id="results">
-            <about>
-                <label>Results</label>
-                <description>Output of the system.</description>
-            </about>
-        </string>
+        <log>
+        </log>
+        <!-- <table id="litCalcVal"> -->
+        <!--     <about> -->
+        <!--         <label>Literature or Calculated Values</label> -->
+        <!--     </about> -->
+        <!--     <column id="material"><label/></column> -->
+        <!--     <column id="latConst"> -->
+        <!--         <label>a [A]</label> -->
+        <!--     </column> -->
+        <!--     <column id="C11i"> -->
+        <!--         <label>C11i [GPa]</label> -->
+        <!--     </column> -->
+        <!--     <column id="C12i"> -->
+        <!--         <label>C12i [GPa]</label> -->
+        <!--     </column> -->
+        <!--     <column id="C11a"> -->
+        <!--         <label>C11a [GPa]</label> -->
+        <!--     </column> -->
+        <!--     <column id="C12a"> -->
+        <!--         <label>C12a [GPa]</label> -->
+        <!--     </column> -->
+        <!--     <data></data> -->
+        <!-- </table> -->
     </output>
 </run>

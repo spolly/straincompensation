@@ -161,7 +161,7 @@ mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub))
 
 %guidata(hObject,handles)
 
-results=num2str(mCETsph,4);
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,8 +169,8 @@ results=num2str(mCETsph,4);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % save output value for output.string(results)
-rpLibPutString(io,'output.string(results).current',results,0);
-
-
+rpLibPutString(io,'output.log',strcat('Sub', strcat(sprintf(' %.3g',[aSub,c11iSub,c12iSub,c11aSub,c12aSub])), '\n'),1);
+rpLibPutString(io,'output.log',strcat('QD', sprintf(' %.3g',[aQD,c11iQD,c12iQD,c11aQD,c12aQD]), '\n'),1);
+rpLibPutString(io,'output.log',strcat('SC', sprintf(' %.3g',[aSC,c11iSC,c12iSC,c11aSC,c12aSC]), '\n'),1);
 rpLibResult(io);
 quit;

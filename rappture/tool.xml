@@ -20,31 +20,37 @@
                     <about>
                         <label>Al</label>
                     </about>
+                    <value>1</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>Ga</label>
                     </about>
+                    <value>2</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>In</label>
                     </about>
+                    <value>3</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>Al_(x)Ga_(1-x)</label>
                     </about>
+                    <value>4</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>Al_(x)In_(1-x)</label>
                     </about>
+                    <value>5</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>In_(x)Ga_(1-x)</label>
                     </about>
+                    <value>6</value>
                 </option>
                 <default>Ga</default>
             </choice>
@@ -57,31 +63,37 @@
                     <about>
                         <label>P</label>
                     </about>
+                    <value>7</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>As</label>
                     </about>
+                    <value>8</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>Sb</label>
                     </about>
+                    <value>9</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>As_(y)P_(1-y)</label>
                     </about>
+                    <value>10</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>As_(y)Sb_(1-y)</label>
                     </about>
+                    <value>11</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>Sb_(y)P_(1-y)</label>
                     </about>
+                    <value>12</value>
                 </option>
                 <default>As</default>
             </choice>
@@ -120,31 +132,37 @@
                     <about>
                         <label>Al</label>
                     </about>
+                    <value>1</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>Ga</label>
                     </about>
+                    <value>2</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>In</label>
                     </about>
+                    <value>3</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>Al_(x)Ga_(1-x)</label>
                     </about>
+                    <value>4</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>Al_(x)In_(1-x)</label>
                     </about>
+                    <value>5</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>In_(x)Ga_(1-x)</label>
                     </about>
+                    <value>6</value>
                 </option>
                 <default>In</default>
             </choice>
@@ -157,31 +175,37 @@
                     <about>
                         <label>P</label>
                     </about>
+                    <value>7</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>As</label>
                     </about>
+                    <value>8</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>Sb</label>
                     </about>
+                    <value>9</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>As_(y)P_(1-y)</label>
                     </about>
+                    <value>10</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>As_(y)Sb_(1-y)</label>
                     </about>
+                    <value>11</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>Sb_(y)P_(1-y)</label>
                     </about>
+                    <value>12</value>
                 </option>
                 <default>As</default>
             </choice>
@@ -220,31 +244,37 @@
                     <about>
                         <label>Al</label>
                     </about>
+                    <value>1</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>Ga</label>
                     </about>
+                    <value>2</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>In</label>
                     </about>
+                    <value>3</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>Al_(x)Ga_(1-x)</label>
                     </about>
+                    <value>4</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>Al_(x)In_(1-x)</label>
                     </about>
+                    <value>5</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>In_(x)Ga_(1-x)</label>
                     </about>
+                    <value>6</value>
                 </option>
                 <default>Ga</default>
             </choice>
@@ -257,31 +287,37 @@
                     <about>
                         <label>P</label>
                     </about>
+                    <value>7</value>
                 </option>
                 <option id="2">
                     <about>
                         <label>As</label>
                     </about>
+                    <value>8</value>
                 </option>
                 <option id="3">
                     <about>
                         <label>Sb</label>
                     </about>
+                    <value>9</value>
                 </option>
                 <option id="4">
                     <about>
                         <label>As_(y)P_(1-y)</label>
                     </about>
+                    <value>10</value>
                 </option>
                 <option id="5">
                     <about>
                         <label>As_(y)Sb_(1-y)</label>
                     </about>
+                    <value>11</value>
                 </option>
                 <option id="6">
                     <about>
                         <label>Sb_(y)P_(1-y)</label>
                     </about>
+                    <value>12</value>
                 </option>
                 <default>P</default>
             </choice>

@@ -6,6 +6,9 @@
 % the file name comes in from the command-line via variable 'infile'
 io = rpLib(infile);
 
+mats = {"Al", "Ga", "In", "Al_(x)Ga_(1-x)", "Al_(x)In_(1-x)", "In_(x)Ga_(1-x)",...
+        "P", "As", "Sb", "As_(y)P_(1-y)", "As_(y)Sb_(1-y)", "Sb_(y)P_(1-y)"};
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get input values from Rappture
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,10 +30,10 @@ str = rpLibGetString(io,'input.number(WL).current');
 [WL,err] = rpUnitsConvertDbl(str, 'nm');
 
 % get input value for input.group(Sub).choice(SubIII)
-SubIII = rpLibGetString(io,'input.group(Sub).choice(SubIII).current');
+SubIII = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubIII).current'))}
 
 % get input value for input.group(Sub).choice(SubV)
-SubV = rpLibGetString(io,'input.group(Sub).choice(SubV).current');
+SubV = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubV).current'))};
 
 % get input value for input.group(Sub).number(Subx)
 Subx = rpLibGetDouble(io,'input.group(Sub).number(Subx).current');
@@ -39,10 +42,10 @@ Subx = rpLibGetDouble(io,'input.group(Sub).number(Subx).current');
 Suby = rpLibGetDouble(io,'input.group(Sub).number(Suby).current');
 
 % get input value for input.group(QD).choice(QDIII)
-QDIII = rpLibGetString(io,'input.group(QD).choice(QDIII).current');
+QDIII = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDIII).current'))};
 
 % get input value for input.group(QD).choice(QDV)
-QDV = rpLibGetString(io,'input.group(QD).choice(QDV).current');
+QDV = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDV).current'))};
 
 % get input value for input.group(QD).number(QDx)
 QDx = rpLibGetDouble(io,'input.group(QD).number(QDx).current');
@@ -51,10 +54,10 @@ QDx = rpLibGetDouble(io,'input.group(QD).number(QDx).current');
 QDy = rpLibGetDouble(io,'input.group(QD).number(QDy).current');
 
 % get input value for input.group(SC).choice(SCIII)
-SCIII = rpLibGetString(io,'input.group(SC).choice(SCIII).current');
+SCIII = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCIII).current'))};
 
 % get input value for input.group(SC).choice(SCV)
-SCV = rpLibGetString(io,'input.group(SC).choice(SCV).current');
+SCV = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCV).current'))};
 
 % get input value for input.group(SC).number(SCx)
 SCx = rpLibGetDouble(io,'input.group(SC).number(SCx).current');
@@ -172,9 +175,9 @@ rpLibPutString(io,'output.log',...
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', 'Modified CET (QD as Cylinder)'),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Lit (i)', mCETcyli, tQDWLCyl),1);
+               sprintf(fmt, 'Lit (i)', mCETcyli, tQDWLCyl/10),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Calc (a)', mCETcyla, tQDWLCyl),1);
+               sprintf(fmt, 'Calc (a)', mCETcyla, tQDWLCyl/10),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', 'Modified CET (QD as Oblate-Hemispheroid)'),1);
 rpLibPutString(io,'output.log',...

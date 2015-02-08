@@ -73,410 +73,67 @@ SCy = rpLibGetDouble(io,'input.group(SC).number(SCy).current');
 %rpUtilsProgress(50, 'Half-way there');
 %rpUtilsProgress(100, 'Done');
 
-if Subx < 1
-    if Suby < 1 %This is a quaternary material III(A,x)III(B,1-x)V(C,y)V(D,1-y)
-        %Get material for binary AC x,y
-	if SubIII == 4 || SubIII == 5 %Al
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SubIII == 6 %In
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if SubIII == 4 || SubIII == 6 %Ga
-		if SubV == 10 || SubV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif SubV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif SubIII == 5 %In
-		if SubV == 10 || SubV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif SubV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        %Get material for binary AD x, 1-y
-	if SubIII == 4 || SubIII == 5 %Al
-		if SubV == 10 || SubV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif SubV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif SubIII == 6 %In
-		if SubV == 10 || SubV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif SubV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-	%Get material for binary BD 1-x, 1-y
-	if SubIII == 4 || SubIII == 6 %Ga
-		if SubV == 10 || SubV == 12 %P
-        		aD=getMaterial(1, 8); %GaP
-		elseif SubV == 11 %Sb
-			aD=getMaterial(1, 9); %GaSb
-		end
-	elseif SubIII == 5 %In
-		if SubV == 10 || SubV == 12 %P
-        		aD=getMaterial(1, 8); %InP
-		elseif SubV == 11 %Sb
-			aD=getMaterial(1, 9); %InSb
-		end
-	end
-        [aSub,c11Sub,c12Sub]=calcMaterial(aA, aB, Subx, aC, aD, Suby);
-    else %This is a ternary material III(A,x)III(B,1-x)V(C)
-	%Get material for binary AC x,y
-	if SubIII == 4 || SubIII == 5 %Al
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SubIII == 6 %In
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if SubIII == 4 || SubIII == 6 %Ga
-		if SubV == 10 || SubV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif SubV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif SubIII == 5 %In
-		if SubV == 10 || SubV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif SubV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        [aSub,c11Sub,c12Sub]=calcMaterial(aA, aB, SubX, 0, 0, 0);
-    end
-elseif handles.SubY < 1 %This is a ternary material III(A)V(C,y)V(D,1-y)
-    %eg GaAsP
-	%Get material for binary AC x,y
-	if SubIII == 4 || SubIII == 5 %Al
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SubIII == 6 %In
-		if SubV == 10 || SubV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SubV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary AD x, 1-y
-	if SubIII == 4 || SubIII == 5 %Al
-		if SubV == 10 || SubV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif SubV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif SubIII == 6 %In
-		if SubV == 10 || SubV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif SubV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-    [aSub,c11Sub,c12Sub]=calcMaterial(0, 0, 0, aC, aD, Suby);
-else
-    %eg GaAs
-    [aSub,c11Sub,c12Sub]=getMaterial(SubIII, SubV);
-end
-
-if QDx < 1
-    if QDy < 1 %This is a quaternary material III(A,x)III(B,1-x)V(C,y)V(D,1-y)
-        %Get material for binary AC x,y
-	if QDIII == 4 || QDIII == 5 %Al
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif QDIII == 6 %In
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if QDIII == 4 || QDIII == 6 %Ga
-		if QDV == 10 || QDV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif QDV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif QDIII == 5 %In
-		if QDV == 10 || QDV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif QDV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        %Get material for binary AD x, 1-y
-	if QDIII == 4 || QDIII == 5 %Al
-		if QDV == 10 || QDV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif QDV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif QDIII == 6 %In
-		if QDV == 10 || QDV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif QDV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-	%Get material for binary BD 1-x, 1-y
-	if QDIII == 4 || QDIII == 6 %Ga
-		if QDV == 10 || QDV == 12 %P
-        		aD=getMaterial(1, 8); %GaP
-		elseif QDV == 11 %Sb
-			aD=getMaterial(1, 9); %GaSb
-		end
-	elseif QDIII == 5 %In
-		if QDV == 10 || QDV == 12 %P
-        		aD=getMaterial(1, 8); %InP
-		elseif QDV == 11 %Sb
-			aD=getMaterial(1, 9); %InSb
-		end
-	end
-        [aQD,c11QD,c12QD]=calcMaterial(aA, aB, QDx, aC, aD, QDy);
-    else %This is a ternary material III(A,x)III(B,1-x)V(C)
-	%Get material for binary AC x,y
-	if QDIII == 4 || QDIII == 5 %Al
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif QDIII == 6 %In
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if QDIII == 4 || QDIII == 6 %Ga
-		if QDV == 10 || QDV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif QDV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif QDIII == 5 %In
-		if QDV == 10 || QDV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif QDV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        [aQD,c11QD,c12QD]=calcMaterial(aA, aB, QDx, 0, 0, 0);
-    end
-elseif handles.QDy < 1 %This is a ternary material III(A)V(C,y)V(D,1-y)
-    %eg GaAsP
-	%Get material for binary AC x,y
-	if QDIII == 4 || QDIII == 5 %Al
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif QDIII == 6 %In
-		if QDV == 10 || QDV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif QDV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary AD x, 1-y
-	if QDIII == 4 || QDIII == 5 %Al
-		if QDV == 10 || QDV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif QDV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif QDIII == 6 %In
-		if QDV == 10 || QDV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif QDV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-    [aQD,c11QD,c12QD]=calcMaterial(0, 0, 0, aC, aD, QDy);
-else
-    %eg GaAs
-    [aQD,c11QD,c12QD]=getMaterial(QDIII, QDV);
-end
-
-if SCx < 1
-    if SCy < 1 %This is a quaternary material III(A,x)III(B,1-x)V(C,y)V(D,1-y)
-        %Get material for binary AC x,y
-	if SCIII == 4 || SCIII == 5 %Al
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SCIII == 6 %In
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if SCIII == 4 || SCIII == 6 %Ga
-		if SCV == 10 || SCV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif SCV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif SCIII == 5 %In
-		if SCV == 10 || SCV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif SCV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        %Get material for binary AD x, 1-y
-	if SCIII == 4 || SCIII == 5 %Al
-		if SCV == 10 || SCV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif SCV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif SCIII == 6 %In
-		if SCV == 10 || SCV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif SCV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-	%Get material for binary BD 1-x, 1-y
-	if SCIII == 4 || SCIII == 6 %Ga
-		if SCV == 10 || SCV == 12 %P
-        		aD=getMaterial(1, 8); %GaP
-		elseif SCV == 11 %Sb
-			aD=getMaterial(1, 9); %GaSb
-		end
-	elseif SCIII == 5 %In
-		if SCV == 10 || SCV == 12 %P
-        		aD=getMaterial(1, 8); %InP
-		elseif SCV == 11 %Sb
-			aD=getMaterial(1, 9); %InSb
-		end
-	end
-        [aSC,c11SC,c12SC]=calcMaterial(aA, aB, SCx, aC, aD, SCy);
-    else %This is a ternary material III(A,x)III(B,1-x)V(C)
-	%Get material for binary AC x,y
-	if SCIII == 4 || SCIII == 5 %Al
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SCIII == 6 %In
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary BC 1-x,y
-	if SCIII == 4 || SCIII == 6 %Ga
-		if SCV == 10 || SCV == 11 %As
-        		aB=getMaterial(1, 8); %GaAs
-		elseif SCV == 12 %Sb
-			aB=getMaterial(1, 9); %GaSb
-		end
-	elseif SCIII == 5 %In
-		if SCV == 10 || SCV == 11 %As
-        		aB=getMaterial(3, 8); %InAs
-		elseif SCV == 12 %Sb
-			aB=getMaterial(3, 9); %InSb
-		end
-	end
-        [aSC,c11SC,c12SC]=calcMaterial(aA, aB, SCx, 0, 0, 0);
-    end
-elseif handles.SCy < 1 %This is a ternary material III(A)V(C,y)V(D,1-y)
-    %eg GaAsP
-	%Get material for binary AC x,y
-	if SCIII == 4 || SCIII == 5 %Al
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(1, 8); %AlAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(1, 9); %AlSb
-		end
-	elseif SCIII == 6 %In
-		if SCV == 10 || SCV == 11 %As
-        		aA=getMaterial(3, 8); %InAs
-		elseif SCV == 12 %Sb
-			aA=getMaterial(3, 9); %InSb
-		end
-	end
-	%Get material for binary AD x, 1-y
-	if SCIII == 4 || SCIII == 5 %Al
-		if SCV == 10 || SCV == 12 %P
-        		aC=getMaterial(1, 8); %AlP
-		elseif SCV == 11 %Sb
-			aC=getMaterial(1, 9); %AlSb
-		end
-	elseif SCIII == 6 %In
-		if SCV == 10 || SCV == 12 %P
-        		aC=getMaterial(1, 8); %InP
-		elseif SCV == 11 %Sb
-			aC=getMaterial(1, 9); %InSb
-		end
-	end
-    [aSC,c11SC,c12SC]=calcMaterial(0, 0, 0, aC, aD, SCy);
-else
-    %eg GaAs
-    [aSC,c11SC,c12SC]=getMaterial(SCIII, SCV);
-end
-
+% Unit Conversions -----------------------------------------
 QDDensity=QDDen * 1e-16; %Angstrom^-2 {5e-6 A^-2 = 5e10 cm^-2}
 QDDiameter=QDDia * 10; %Angstrom
 QDHeight=QDH * 10; %Angstrom
 WLThickness=WL * 10; %Angstrom
 
-ASC=c11SC + c12SC - (2*c12SC.^2./c11SC);
-AQD=c11QD + c12QD - (2*c12QD.^2./c11QD);
+% Parse Material Selection ---------------------------------
+[AC,BC,AD,BD] = parseSelection(SubIII, SubV);
+[aSub,c11iSub,c12iSub,c11aSub,c12aSub] = calcMaterial(AC,AD,Subx,BC,BD,Suby);
 
-%Leonard QD as spherical cap
+[AC,BC,AD,BD] = parseSelection(QDIII, QDV);
+[aQD,c11iQD,c12iQD,c11aQD,c12aQD] = calcMaterial(AC,AD,QDx,BC,BD,QDy);
+
+[AC,BC,AD,BD] = parseSelection(SCIII, SCV);
+[aSC,c11iSC,c12iSC,c11aSC,c12aSC] = calcMaterial(AC,AD,SCx,BC,BD,SCy);
+
+
+% Stiffness Calculations ----------------------------------
+%Interpolated stiffness ratios
+ASCi=c11iSC + c12iSC - (2*c12iSC.^2./c11iSC);
+AQDi=c11iQD + c12iQD - (2*c12iQD.^2./c11iQD);
+
+%Adachi equation stiffness ratios
+ASCa=c11aSC + c12aSC - (2*c12aSC.^2./c11aSC);
+AQDa=c11aQD + c12aQD - (2*c12aQD.^2./c11aQD);
+
+
+% QD Volume Calculations -----------------------------------
+% QD as spherical cap
 vQDSphCap=pi.*QDHeight./6 .* (3 .*(QDDiameter/2).^2 + QDHeight.^2);
 
-%CET
-CETQD=QDHeight*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
-
-%mCETCyl
-CETWL=WLThickness*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
+% QD as cylinder
 QDsigma=(QDDiameter/2)^2*pi; %QD base area
 vQDCyl=QDHeight*QDsigma;
-tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness;
-mCETcyl=(QDsigma*QDDensity)*CETQD + (1-QDsigma*QDDensity)*CETWL; %weighted SC thickness
 
-%mCETSphere
+% QD as oblate hemispheroid
 vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2;
+
+% Strain Compensation Calculations -------------------------
+% CET QD Thickness
+CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+
+%CET WL Thickness
+CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+
+%Effective coverage of QD material (Cylinder)
+tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness;
+
+%mCET Cylinder
+mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %weighted SC thickness
+mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %weighted SC thickness
+
+%Effective coverage of QD material (Oblate Hemispheroid)
 tQD=vQDOblSph*QDDensity; %volume of QD times QD density gives average thickness of QD per area
 tQDWL=WLThickness+tQD; %WL is treated as external to QD
-mCETsph=tQDWL*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/10;
+
+%mCET Oblate Hemispheroid
+mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
+mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
 
 %set(handles.QDVolSphCap,'String',num2str(vQDSphCap/1000,4)) %convert to nm^3 from A^3
 %set(handles.QDVolCyl,'String',num2str(vQDCyl/1000,4)) %convert to nm^3 from A^3
@@ -506,90 +163,6 @@ mCETsph=tQDWL*((AQD .* aSC^2 .* (aSub - aQD))./(ASC .* aQD^2 .* (aSC - aSub)))/1
 
 results=num2str(mCETsph,4);
 
-function [a,C11,C12]=getMaterial(III,V)
-%All material properties from:
-% [1]I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, “Band parameters
-% for III–V compound semiconductors and their alloys,” Journal of Applied
-% Physics, vol. 89, no. 11, pp. 5815–5875, Jun. 2001.
-
-	switch III
- 		case 1 %'Al'
-			switch V
-				case 7 %'P'
-					%AlP
-					a=5.4672; %[Angstrom]
-					C11=1330; %[GPa]
-					C12=630; %[GPa]
-				    case 8 %'As'
-					%AlAs
-					a=5.6611; %[Angstrom]
-					C11=1250; %[GPa]
-					C12=534; %[GPa]
-
-				    case 9 %'Sb'
-					%AlSb
-					a=6.1355; %[Angstrom]
-					C11=876.9; %[GPa]
-					C12=434.1; %[GPa]
-				end
-	    	case 2 %'Ga'
-			switch V
-			    case 8 %'As'
-				%GaAs
-				a=5.65325; %[Angstrom]
-				C11=1221; %[GPa]
-				C12=566; %[GPa]
-			    case 7 %'P'
-				%GaP
-				a=5.4505; %[Angstrom]
-				C11=1405; %[GPa]
-				C12=620.3; %[GPa]
-			    case 9 %'Sb'
-				%GaSb
-				a=6.0959; %[Angstrom]
-				C11=884.2; %[GPa]
-				C12=402.6; %[GPa]
-			end
-	    	case 3 %'In'
-			switch V
-			    case 8 %'As'
-				%InAs
-				a=6.0583; %[Angstrom]
-				C11=832.9; %[GPa]
-				C12=452.6; %[GPa]
-			    case 7 %'P'
-				%InP
-				a=5.8697; %[Angstrom]
-				C11=1011; %[GPa]
-				C12=561; %[GPa]
-			    case 9 %'Sb'
-				%InSb
-				a=6.4794; %[Angstrom]
-				C11=684.7; %[GPa]
-				C12=373.5; %[GPa]
-			end
-
-		end
-endfunction
-
-function [a,C11,C12]=calcMaterial(ac,bc,x,ad,bd,y)
-	if x > 0
-	    if y > 0
-		%eg AlGaAsP
-		a=(x*y)*ac+x*(1-y)*ad+(1-x)*y*bc+(1-x)*(1-y)*bd;
-	    else
-		%eg AlGaP
-		a=(ac)*x + (bc)*(1-x);
-	    end
-	else
-	    %eg GaAsP
-	    a=(ad)*y + (bd)*(1-y);
-	end
-	%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors.
-	%   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-	C11=exp((-4.16629.*log(a)+9.70098))*100; %[GPa]
-	C12=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]
-endfunction
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Save output values back to Rappture

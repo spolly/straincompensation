@@ -142,7 +142,9 @@ mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub))
 % Save output values back to Rappture
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% save output value for output.string(results)
+% =============================================================================
+% Log Output
+% =============================================================================
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', 'Literature (i) or Calculated Values (a) --'),1);
 rpLibPutString(io,'output.log',...
@@ -199,5 +201,28 @@ rpLibPutString(io,'output.log',...
                sprintf(fmt, 'Calc (a)', mCETspha, tQDWL/10),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '+----------+------------+----------------------+'),1);
+
+% =============================================================================
+% Main Output
+% =============================================================================
+% Required SC Thick -----------------------------------------------------------
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(cet).number(scthick)', CETQDi, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(cet).number(scthick)', CETQDa, 0);
+
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(mCETcyl).number(scthick)', mCETcyli, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(mCETcyl).number(scthick)', mCETcyla, 0);
+
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(mCETsph).number(scthick)', mCETsphi, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(mCETsph).number(scthick)', mCETspha, 0);
+
+% Eff QD+QW Thickness ---------------------------------------------------------
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(cet).number(effQDQWthick)', QDHeight/10, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(cet).number(effQDQWthick)', QDHeight/10, 0);
+
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(mCETcyl).number(effQDQWthick)', tQDWLCyl/10, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(mCETcyl).number(effQDQWthick)', tQDWLCyl/10, 0);
+
+rpLibPutDouble(io,'output.group(tabs).group(lit).group(mCETsph).number(effQDQWthick)', tQDWL/10, 0);
+rpLibPutDouble(io,'output.group(tabs).group(calc).group(mCETsph).number(effQDQWthick)', tQDWL/10, 0);
 rpLibResult(io);
 quit;

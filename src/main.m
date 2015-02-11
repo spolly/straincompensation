@@ -37,9 +37,15 @@ SubV = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubV).current'))}
 
 % get input value for input.group(Sub).number(Subx)
 Subx = rpLibGetDouble(io,'input.group(Sub).number(Subx).current');
+if (length(SubIII) < 3)
+  Subx = 1;
+end
 
 % get input value for input.group(Sub).number(Suby)
 Suby = rpLibGetDouble(io,'input.group(Sub).number(Suby).current');
+if (length(SubV) < 3)
+  Suby = 1;
+end
 
 % get input value for input.group(QD).choice(QDIII)
 QDIII = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDIII).current'))};
@@ -49,9 +55,15 @@ QDV = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDV).current'))};
 
 % get input value for input.group(QD).number(QDx)
 QDx = rpLibGetDouble(io,'input.group(QD).number(QDx).current');
+if (length(QDIII) < 3)
+  QDx = 1;
+end
 
 % get input value for input.group(QD).number(QDy)
 QDy = rpLibGetDouble(io,'input.group(QD).number(QDy).current');
+if (length(QDV) < 3)
+  QDy = 1;
+end
 
 % get input value for input.group(SC).choice(SCIII)
 SCIII = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCIII).current'))};
@@ -61,9 +73,15 @@ SCV = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCV).current'))};
 
 % get input value for input.group(SC).number(SCx)
 SCx = rpLibGetDouble(io,'input.group(SC).number(SCx).current');
+if (length(SCIII) < 3)
+  SCx = 1;
+end
 
 % get input value for input.group(SC).number(SCy)
 SCy = rpLibGetDouble(io,'input.group(SC).number(SCy).current');
+if (length(SCV) < 3)
+  SCy = 1;
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

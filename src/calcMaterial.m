@@ -1,6 +1,10 @@
 function [a,C11i,C12i,C11a,C12a]=calcMaterial(AC,AD,x,BC,BD,y)
 %Funtion calcMaterial returns the calculated (or literature) lattice...
 %constant and elastic stiffness coefficients for a given material.
+%
+% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% GPL v3, See LICENSE for details
+% This function is part of straincomp (https://nanohub.org/resources/straincomp)
 if x < 1
     if y < 1
         %eg AlGaAsSb

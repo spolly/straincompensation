@@ -4,6 +4,11 @@
         <title>Strain Compensation Thickness Calculator</title>
         <about>Strain compensation thickness calculator for quantum dots or quantum wells in a wide range of material systems.</about>
         <command>octave --silent --eval infile='@driver',path('@tool/../bin',path),main</command>
+        <!--
+            Copyright (C) 2014-2015 Stephen J. Polly and Alex J. Grede
+            GPL v3, See LICENSE for details
+            File is part of straincomp (https://nanohub.org/resources/straincomp)
+        -->
     </tool>
     <input>
         <group id="Sub">

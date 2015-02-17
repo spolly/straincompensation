@@ -130,38 +130,38 @@ AQDa=c11aQD + c12aQD - (2*c12aQD.^2./c11aQD);
 
 % QD Volume Calculations -----------------------------------
 % QD as spherical cap
-vQDSphCap=pi.*QDHeight./6 .* (3 .*(QDDiameter/2).^2 + QDHeight.^2);
+vQDSphCap=pi.*QDHeight./6 .* (3 .*(QDDiameter/2).^2 + QDHeight.^2); %[A^3]
 
 % QD as cylinder
-QDsigma=(QDDiameter/2)^2*pi; %QD base area
-vQDCyl=QDHeight*QDsigma;
+QDsigma=(QDDiameter/2)^2*pi; %QD base area [A^2]
+vQDCyl=QDHeight*QDsigma; %[A^3]
 
 % QD as oblate hemispheroid
-vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2;
+vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2; %[A^3]
 
 % Strain Compensation Calculations -------------------------
 % CET QD Thickness
-CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
-CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
 
 %CET WL Thickness
-CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
-CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
 
 %Effective coverage of QD material (Cylinder)
-tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness;
+tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness; %[A]
 
-%mCET Cylinder
-mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %weighted SC thickness
-mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %weighted SC thickness
+%mCET Cylinder weighted SC thickness
+mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %[nm]
+mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %[nm]
 
 %Effective coverage of QD material (Oblate Hemispheroid)
-tQD=vQDOblSph*QDDensity; %volume of QD times QD density gives average thickness of QD per area
-tQDWL=WLThickness+tQD; %WL is treated as external to QD
+tQD=vQDOblSph*QDDensity; %average thickness of QD per area [A]
+tQDWL=WLThickness+tQD; %WL is treated as external to QD [A]
 
 %mCET Oblate Hemispheroid
-mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10;
-mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10;
+mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Save output values back to Rappture

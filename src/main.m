@@ -141,27 +141,152 @@ vQDOblSph=((4/3)*pi*(QDDiameter/2)^2*QDHeight)/2; %[A^3]
 
 % Strain Compensation Calculations -------------------------
 % CET QD Thickness
-CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
-CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+CETQDi=QDHeight*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub))); %[A]
+CETQDa=QDHeight*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub))); %[A]
 
 %CET WL Thickness
-CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
-CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+CETWLi=WLThickness*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub))); %[A]
+CETWLa=WLThickness*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub))); %[A]
 
 %Effective coverage of QD material (Cylinder)
 tQDWLCyl=(QDsigma*QDDensity)*QDHeight+(1-QDsigma*QDDensity)*WLThickness; %[A]
 
 %mCET Cylinder weighted SC thickness
-mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %[nm]
-mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %[nm]
+mCETcyli=(QDsigma*QDDensity)*CETQDi + (1-QDsigma*QDDensity)*CETWLi; %[A]
+mCETcyla=(QDsigma*QDDensity)*CETQDa + (1-QDsigma*QDDensity)*CETWLa; %[A]
 
 %Effective coverage of QD material (Oblate Hemispheroid)
 tQD=vQDOblSph*QDDensity; %average thickness of QD per area [A]
 tQDWL=WLThickness+tQD; %WL is treated as external to QD [A]
 
 %mCET Oblate Hemispheroid
-mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub)))/10; %[nm]
-mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub)))/10; %[nm]
+mCETsphi=tQDWL*((AQDi .* aSC^2 .* (aSub - aQD))./(ASCi .* aQD^2 .* (aSC - aSub))); %[A]
+mCETspha=tQDWL*((AQDa .* aSC^2 .* (aSub - aQD))./(ASCa .* aQD^2 .* (aSC - aSub))); %[A]
+
+%Interpolated stiffness ratios
+ASCi=c11iSC + c12iSC - (2*c12iSC.^2./c11iSC);
+AQDi=c11iQD + c12iQD - (2*c12iQD.^2./c11iQD);
+
+%Adachi equation stiffness ratios
+ASCa=c11aSC + c12aSC - (2*c12aSC.^2./c11aSC);
+AQDa=c11aQD + c12aQD - (2*c12aQD.^2./c11aQD);
+
+%Effective lattice constant of CET
+a0SLQDCETi=edzerostress(AQDi, QDHeight, aQD, ASCi, CETQDi, aSC); %[A]
+a0SLQDCETa=edzerostress(AQDa, QDHeight, aQD, ASCa, CETQDa, aSC); %[A]
+
+%Effective lattice constant of mCET Cylinder
+%QD
+a0SLQDmCETcyli=edzerostress(AQDi, QDHeight, aQD, ASCi, mCETcyli, aSC); %[A]
+a0SLQDmCETcyla=edzerostress(AQDa, QDHeight, aQD, ASCa, mCETcyla, aSC); %[A]
+%WL
+a0SLWLmCETcyli=edzerostress(AQDi, WLThickness, aQD, ASCi, mCETcyli, aSC); %[A]
+a0SLWLmCETcyla=edzerostress(AQDa, WLThickness, aQD, ASCa, mCETcyla, aSC); %[A]
+
+%Effective lattice constant of mCET Oblate Hemispheroid
+%QD
+a0SLQDmCETsphi=edzerostress(AQDi, vQDOblSph/QDsigma + WLThickness, aQD, ASCi, mCETsphi, aSC); %[A]
+a0SLQDmCETspha=edzerostress(AQDa, vQDOblSph/QDsigma + WLThickness, aQD, ASCa, mCETspha, aSC); %[A]
+%WL
+a0SLWLmCETsphi=edzerostress(AQDi, WLThickness, aQD, ASCi, mCETsphi, aSC); %[A]
+a0SLWLmCETspha=edzerostress(AQDa, WLThickness, aQD, ASCa, mCETspha, aSC); %[A]
+
+%Calculation of tetragonally distorted lattice constant
+apQDi=(aQD-aSub)*(1 + 2 * c12iQD/c11iQD)+aSub; %[A]
+apQDa=(aQD-aSub)*(1 + 2 * c12aQD/c11aQD)+aSub; %[A]
+
+a0pSCi=(aSC-aSub)*(1 + 2 * c12iSC/c11iSC)+aSub; %[A]
+a0pSCa=(aSC-aSub)*(1 + 2 * c12aSC/c11aSC)+aSub; %[A]
+
+%Calculation of absolute misfit strain
+e0QD=abs(aSub-aQD)/aSub;
+e0SC=abs(aSub-aSC)/aSub;
+
+%Calculation of absolute effective misfit strain CET
+e0SLQDCETi=abs(aSub-a0SLQDCETi)/aSub;
+e0SLQDCETa=abs(aSub-a0SLQDCETa)/aSub;
+
+%Calculation of absolute effective misfit strain mCET Cylinder
+%QD
+e0SLQDmCETcyli=abs(aSub-a0SLQDmCETcyli)/aSub;
+e0SLQDmCETcyla=abs(aSub-a0SLQDmCETcyla)/aSub;
+%WL
+e0SLWLmCETcyli=abs(aSub-a0SLWLmCETcyli)/aSub;
+e0SLWLmCETcyla=abs(aSub-a0SLWLmCETcyla)/aSub;
+
+%Calculation of absolute effective misfit strain mCET Oblate Hemispheroid
+%QD
+e0SLQDmCETsphi=abs(aSub-a0SLQDmCETsphi)/aSub;
+e0SLQDmCETspha=abs(aSub-a0SLQDmCETspha)/aSub;
+%WL
+e0SLWLmCETsphi=abs(aSub-a0SLWLmCETsphi)/aSub;
+e0SLWLmCETspha=abs(aSub-a0SLWLmCETspha)/aSub;
+
+%Calculation of Poisson Ratio
+nuQDi=c12iQD/(c11iQD+c12iQD);
+nuQDa=c12aQD/(c11aQD+c12aQD);
+
+nuSCi=c12iSC/(c11iSC+c12iSC);
+nuSCa=c12aSC/(c11aSC+c12aSC);
+
+%Pick the largest Poisson ratio to err toward underestimate of hc
+if nuQDi > nuSCi
+    nui=nuQDi;
+else
+    nui=nuSCi;
+end
+
+if nuQDa > nuSCa
+    nua=nuQDa;
+else
+    nua=nuSCa;
+end
+
+alpha=pi/3;
+lambda=pi/3;
+
+%Calculation of critical SL thickness CET
+hcCETi=matthewsblakeslee(1,a0SLQDCETi,e0SLQDCETi,nui,alpha,lambda,0.001); %[A]
+hcCETa=matthewsblakeslee(1,a0SLQDCETa,e0SLQDCETa,nua,alpha,lambda,0.001); %[A]
+
+%Calculation of critical SL thickness mCET Cylinder
+%QD
+hcmCETQDcyli=matthewsblakeslee(1,a0SLQDmCETcyli,e0SLQDmCETcyli,nui,alpha,lambda,0.001); %[A]
+hcmCETQDcyla=matthewsblakeslee(1,a0SLQDmCETcyla,e0SLQDmCETcyla,nua,alpha,lambda,0.001); %[A]
+%WL
+hcmCETWLcyli=matthewsblakeslee(1,a0SLWLmCETcyli,e0SLWLmCETcyli,nui,alpha,lambda,0.001); %[A]
+hcmCETWLcyla=matthewsblakeslee(1,a0SLWLmCETcyla,e0SLWLmCETcyla,nua,alpha,lambda,0.001); %[A]
+
+%Calculation of critical SL thickness mCET Oblate Hemispheroid
+%QD
+hcmCETQDsphi=matthewsblakeslee(1,a0SLQDmCETsphi,e0SLQDmCETsphi,nui,alpha,lambda,0.001); %[A]
+hcmCETQDspha=matthewsblakeslee(1,a0SLQDmCETspha,e0SLQDmCETspha,nua,alpha,lambda,0.001); %[A]
+%WL
+hcmCETWLsphi=matthewsblakeslee(1,a0SLWLmCETsphi,e0SLWLmCETsphi,nui,alpha,lambda,0.001); %[A]
+hcmCETWLspha=matthewsblakeslee(1,a0SLWLmCETspha,e0SLWLmCETspha,nua,alpha,lambda,0.001); %[A]
+ 
+%Calculation of maximum SL repeat units CET
+maxCETi=floor(hcCETi/(CETQDi+QDHeight));
+maxCETa=floor(hcCETa/(CETQDa+QDHeight));
+
+%Calculation of maximum SL repeat units mCET Cylinder
+%QD
+maxmCETQDcyli=floor(hcmCETQDcyli/(mCETcyli+QDHeight));
+maxmCETQDcyla=floor(hcmCETQDcyla/(mCETcyla+QDHeight));
+%SC
+maxmCETWLcyli=floor(hcmCETWLcyli/(mCETcyli+WLThickness));
+maxmCETWLcyla=floor(hcmCETWLcyla/(mCETcyla+WLThickness));
+
+%Calculation of maximum SL repeat units mCET Oblate Hemispheroid
+%QD
+maxmCETQDsphi=floor(hcmCETQDsphi/(mCETsphi+vQDOblSph/QDsigma+WLThickness));
+maxmCETQDspha=floor(hcmCETQDspha/(mCETspha+vQDOblSph/QDsigma+WLThickness));
+%SC
+maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+WLThickness));
+maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+WLThickness));
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Save output values back to Rappture
@@ -207,21 +332,21 @@ fmt = '| %8s | %0.4e |     %0.4e       |\n';
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '| CET (QD Height as QW)                        |'),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Lit (i)', CETQDi, QDHeight/10),1);
+               sprintf(fmt, 'Lit (i)', CETQDi/10, QDHeight/10),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Calc (e)', CETQDa, QDHeight/10),1);
+               sprintf(fmt, 'Calc (e)', CETQDa/10, QDHeight/10),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '| Modified CET (QD as Cylinder)                |'),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Lit (i)', mCETcyli, tQDWLCyl/10),1);
+               sprintf(fmt, 'Lit (i)', mCETcyli/10, tQDWLCyl/10),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Calc (e)', mCETcyla, tQDWLCyl/10),1);
+               sprintf(fmt, 'Calc (e)', mCETcyla/10, tQDWLCyl/10),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '| Modified CET (QD as Oblate-Hemispheroid)     |'),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Lit (i)', mCETsphi, tQDWL/10),1);
+               sprintf(fmt, 'Lit (i)', mCETsphi/10, tQDWL/10),1);
 rpLibPutString(io,'output.log',...
-               sprintf(fmt, 'Calc (e)', mCETspha, tQDWL/10),1);
+               sprintf(fmt, 'Calc (e)', mCETspha/10, tQDWL/10),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '+----------+------------+----------------------+'),1);
 

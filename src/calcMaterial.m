@@ -1,6 +1,10 @@
 function [a,C11i,C12i,C11a,C12a]=calcMaterial(AC,AD,x,BC,BD,y)
 %Funtion calcMaterial returns the calculated (or literature) lattice...
 %constant and elastic stiffness coefficients for a given material.
+%
+% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% GPL v3, See LICENSE for details
+% This function is part of straincomp (https://nanohub.org/resources/straincomp)
 if x < 1
     if y < 1
         %eg AlGaAsSb
@@ -32,7 +36,7 @@ else
         [a,C11i,C12i]=getMaterial(AC);
     end
 end
-%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors. 
+%[1]S. Adachi, Properties of group-IV, III-V and II-VI semiconductors.
 %   Chichester, England; Hoboken, NJ: John Wiley & Sons, 2005.
-C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa] 
+C11a=exp((-4.16629.*log(a)+9.70098))*100; %[GPa]
 C12a=exp((-3.10462.*log(a)+7.10375))*100; %[GPa]

@@ -1,10 +1,14 @@
 function [AC,BC,AD,BD]=parseSelection(III,V)
+%
+% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% GPL v3, See LICENSE for details
+% This function is part of straincomp (https://nanohub.org/resources/straincomp)
 if length(III) > 2
     if length(V) > 2
         %quaternary A_(x)B_(1-x)C_(y)D_(1-y)
         AC=strcat(III(1:2),V(1:2));
         BC=strcat(III(7:8),V(1:2));
-        if length(V) == 14 
+        if length(V) == 14
             %eg: AlGaAsSb (no P)
             AD=strcat(III(1:2),V(7:8));
             BD=strcat(III(7:8),V(7:8));
@@ -23,7 +27,7 @@ if length(III) > 2
 else
     if length(V) > 2
         %ternary AC_(y)D_(1-y)
-        if length(V) == 14 
+        if length(V) == 14
             %eg: GaAsSb (no P)
             AC=strcat(III,V(1:2));
             AD=strcat(III,V(7:8));

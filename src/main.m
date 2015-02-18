@@ -199,28 +199,28 @@ a0pSCi=(aSC-aSub)*(1 + 2 * c12iSC/c11iSC)+aSub; %[A]
 a0pSCa=(aSC-aSub)*(1 + 2 * c12aSC/c11aSC)+aSub; %[A]
 
 %Calculation of absolute misfit strain
-e0QD=abs(aSub-aQD)/aSub;
-e0SC=abs(aSub-aSC)/aSub;
+e0QD=(aQD-aSub)/aSub;
+e0SC=(aSC-aSub)/aSub;
 
 %Calculation of absolute effective misfit strain CET
-e0SLQDCETi=abs(aSub-a0SLQDCETi)/aSub;
-e0SLQDCETa=abs(aSub-a0SLQDCETa)/aSub;
+e0SLQDCETi=(aSub-a0SLQDCETi)/aSub;
+e0SLQDCETa=(aSub-a0SLQDCETa)/aSub;
 
 %Calculation of absolute effective misfit strain mCET Cylinder
 %QD
-e0SLQDmCETcyli=abs(aSub-a0SLQDmCETcyli)/aSub;
-e0SLQDmCETcyla=abs(aSub-a0SLQDmCETcyla)/aSub;
+e0SLQDmCETcyli=(a0SLQDmCETcyli-aSub)/aSub;
+e0SLQDmCETcyla=(a0SLQDmCETcyla-aSub)/aSub;
 %WL
-e0SLWLmCETcyli=abs(aSub-a0SLWLmCETcyli)/aSub;
-e0SLWLmCETcyla=abs(aSub-a0SLWLmCETcyla)/aSub;
+e0SLWLmCETcyli=(a0SLWLmCETcyli-aSub)/aSub;
+e0SLWLmCETcyla=(a0SLWLmCETcyla-aSub)/aSub;
 
 %Calculation of absolute effective misfit strain mCET Oblate Hemispheroid
 %QD
-e0SLQDmCETsphi=abs(aSub-a0SLQDmCETsphi)/aSub;
-e0SLQDmCETspha=abs(aSub-a0SLQDmCETspha)/aSub;
+e0SLQDmCETsphi=(a0SLQDmCETsphi-aSub)/aSub;
+e0SLQDmCETspha=(a0SLQDmCETspha-aSub)/aSub;
 %WL
-e0SLWLmCETsphi=abs(aSub-a0SLWLmCETsphi)/aSub;
-e0SLWLmCETspha=abs(aSub-a0SLWLmCETspha)/aSub;
+e0SLWLmCETsphi=(a0SLWLmCETsphi-aSub)/aSub;
+e0SLWLmCETspha=(a0SLWLmCETspha-aSub)/aSub;
 
 %Calculation of Poisson Ratio
 nuQDi=c12iQD/(c11iQD+c12iQD);

@@ -1,12 +1,14 @@
 PACKAGE = STRAINCOMP
-VERSION = 1.0.2
+VERSION = 1.0.4
 RELEASE_DIR = ../bin
 SOURCE_DIR = .
 MAIN_FILE = $(SOURCE_DIR)/main.m
 
 FILES = $(SOURCE_DIR)/main.m \
 	$(SOURCE_DIR)/calcMaterial.m \
+	$(SOURCE_DIR)/edzerostress.m \
 	$(SOURCE_DIR)/getMaterial.m \
+	$(SOURCE_DIR)/matthewsblakeslee.m \
 	$(SOURCE_DIR)/parseSelection.m
 
 all:

@@ -223,6 +223,9 @@ e0SLWLmCETsphi=(a0SLWLmCETsphi-aSub)/aSub;
 e0SLWLmCETspha=(a0SLWLmCETspha-aSub)/aSub;
 
 %Calculation of Poisson Ratio
+nuSubi=c12iSub/(c11iSub+c12iSub);
+nuSuba=c12aSub/(c11aSub+c12aSub);
+
 nuQDi=c12iQD/(c11iQD+c12iQD);
 nuQDa=c12aQD/(c11aQD+c12aQD);
 
@@ -303,10 +306,10 @@ rpLibPutString(io,'output.log',...
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '+-----+------------+------------+------------+------------+------------+---------------+'),1);
 fmt1 = '| %3s | %0.4e | %0.4e | %0.4e | %0.4e | %0.4e |  %0.4e   |\n';
-fmt2 = '| %3s | %0.4e | %0.4e | %0.4e |            |            |               |\n';
+fmt2 = '| %3s | %0.4e | %0.4e | %0.4e | %0.4e |            |               |\n';
 
 rpLibPutString(io,'output.log',...
-               sprintf(fmt2,'Sub',aSub,c11iSub,c12iSub),1);
+               sprintf(fmt2,'Sub',aSub,c11iSub,c12iSub,nuSubi),1);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1,'QD',aQD,c11iQD,c12iQD,nuQDi,a0pQDi,e0QD),1);
 rpLibPutString(io,'output.log',...
@@ -319,14 +322,14 @@ rpLibPutString(io,'output.log',...
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '+-----+------------+------------+------------+------------+'),1);
 rpLibPutString(io,'output.log',...
-               sprintf('%s\n', '| Mat |  C11e[GPa] |  C12e[GPa] |  Poisson v |  a_perp[A] |'),1);
+               sprintf('%s\n', '| Mat |  C11e[GPa] |  C12e[GPa] |  Poisson v | a_perp [A] |'),1);
 rpLibPutString(io,'output.log',...
                sprintf('%s\n', '+-----+------------+------------+------------+------------+'),1);
 fmt1 = '| %3s | %0.4e | %0.4e | %0.4e | %0.4e |\n';
-fmt2 = '| %3s | %0.4e | %0.4e |            |            |\n';
+fmt2 = '| %3s | %0.4e | %0.4e | %0.4e |            |\n';
 
 rpLibPutString(io,'output.log',...
-               sprintf(fmt2,'Sub',c11aSub,c12aSub),1);
+               sprintf(fmt2,'Sub',c11aSub,c12aSub,nuSuba),1);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1,'QD',c11aQD,c12aQD,nuQDa,a0pQDa),1);
 rpLibPutString(io,'output.log',...

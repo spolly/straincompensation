@@ -8,8 +8,11 @@ FILES = $(SOURCE_DIR)/main.m \
 	$(SOURCE_DIR)/calcMaterial.m \
 	$(SOURCE_DIR)/edzerostress.m \
 	$(SOURCE_DIR)/getMaterial.m \
+	$(SOURCE_DIR)/makeFormatStr.m \
 	$(SOURCE_DIR)/matthewsblakeslee.m \
 	$(SOURCE_DIR)/parseSelection.m \
+	$(SOURCE_DIR)/printCenter.m \
+	$(SOURCE_DIR)/printDivider.m \
 	$(SOURCE_DIR)/weightedStrainOpt.m
 
 all:

@@ -21,7 +21,7 @@ for k=1:length(colTypes)
     case 'sl' % Left justified string
       strs{k} = sprintf('%%-%is', cols(k));
     case 'blank'
-      strs{k} = repmat(' ', cols(k));
+      strs{k} = repmat(' ', [1, cols(k)]);
     case 'e'
       spl = floor((cols(k)-pres-6)/2);
       spr = cols(k)-spl-pres-6;

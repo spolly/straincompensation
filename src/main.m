@@ -282,11 +282,11 @@ maxmCETWLcyla=floor(hcmCETWLcyla/(mCETcyla+max([QDHeight WLThickness])));
 
 %Calculation of critical SL repeat units mCET Oblate Hemispheroid
 %QD
-maxmCETQDsphi=floor(hcmCETQDsphi/(mCETsphi+QDHeight++WLThickness));
-maxmCETQDspha=floor(hcmCETQDspha/(mCETspha+QDHeight++WLThickness));
+maxmCETQDsphi=floor(hcmCETQDsphi/(mCETsphi+QDHeight+WLThickness));
+maxmCETQDspha=floor(hcmCETQDspha/(mCETspha+QDHeight+WLThickness));
 %SC
-maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+QDHeight++WLThickness));
-maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+QDHeight++WLThickness));
+maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+QDHeight+WLThickness));
+maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+QDHeight+WLThickness));
 
 %Calculation of maximum SL repeat units mCET Cylinder
 [opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(0,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
@@ -313,7 +313,7 @@ printSep = @(cols) rpLibPutString(io,'output.log',...
 printH1 = @(hdr, cols) rpLibPutString(io,'output.log',...
                                       sprintf('\n%s %s\n', hdr,...
                                               repmat('=',...
-                                                    sum(cols+3)+1-length(hdr)));
+                                                [1,sum(cols+3)+1-length(hdr)])),1);
 findCols = @(hdrs, dataLength) max(cellfun(@length, hdrs), dataLength);
 
 
@@ -339,7 +339,7 @@ printSep(cols);
 % Emp Calc ============================================
 hdrs = {'Mat', 'C11e[GPa]', 'C12e[GPa]', 'Poisson v', 'a_perp[A]'};
 cols = findCols(hdrs, [0, 10.*ones(1,length(hdrs)-1)]);
-printH1('Empirically Calculated (e) Values');
+printH1('Empirically Calculated (e) Values', cols);
 printSep(cols);
 printHeader(hdrs, cols);
 printSep(cols);
@@ -366,15 +366,15 @@ rpLibPutString(io,'output.log',sprintf('%9s: %0.4e\n','Obl. Sph.',vQDOblSph/1000
 hdrs1 = {'Params', 'Req. SC', 'Eff QD+WL Thick', 'Max SL'};
 hdrs2 = {'Used', 'Thick[nm]', '[nm^3 cm^-2] or [nm]', 'Method'};
 cols = findCols(hdrs1, findCols(hdrs2, [8, 10.*ones(1,length(hdrs1)-1)]));
-fmt1 = sprintf('| %s |\n', makeFormatStr({'s','e','e','e'}));
-fmt2 = sprintf('| %s |\n', makeFormatStr({'s','e','blank','blank'}));
+fmt1 = sprintf('| %s |\n', makeFormatStr({'s','e','e','e'}, cols, ' | '));
+fmt2 = sprintf('| %s |\n', makeFormatStr({'s','e','e','blank'}, cols, ' | '));
 printH1('Strain Compensation',cols);
 printSep(cols);
 printHeader(hdrs1, cols);
 printHeader(hdrs2, cols);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'CET (QD Height as QW)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'CET (QD Height as QW)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'Lit (i)', CETQDi/10, QDHeight/10),1);
@@ -382,7 +382,7 @@ rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'Calc (e)', CETQDa/10, QDHeight/10),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'Modified CET (QD as Cylinder)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'Modified CET (QD as Cylinder)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Lit (i)', mCETcyli/10, tQDWLCyl/10, mCETcylOpti),1);
@@ -390,7 +390,7 @@ rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Calc (e)', mCETcyla/10, tQDWLCyl/10, mCETcylOpta),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'Modified CET (QD as Oblate-Hemispheroid)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'Modified CET (QD as Oblate-Hemispheroid)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Lit (i)', mCETsphi/10, tQDWL/10, mCETsphOpti),1);
@@ -402,16 +402,16 @@ printSep(cols);
 hdrs1 = {'Params', 'Eff lc [A]', 'Eff Misfit', 'Crit SL', 'Crit SL','Max SL',...
          'Max SL'};
 hdrs2 = {'Used', '', 'Strain', 'Thick [nm]', 'Units', 'Thick [nm]', 'Units'};
-cols = findCols(hdrs1, findCols(hdrs2, [11, 10.*ones(1,length(hdrs1)-1)]));
-fmt1 = sprintf('| %s |\n', makeFormatStr({'s','e','e','e','e','e'}));
-fmt2 = sprintf('| %s |\n', makeFormatStr({'s','e','e','blank','blank','blank'}));
+cols = findCols(hdrs1, findCols(hdrs2, [11, 10, 11, 10.*ones(1,length(hdrs1)-3)]));
+fmt1 = sprintf('| %s |\n', makeFormatStr({'s','e','esgn','e','e','e','e'}, cols, ' | '));
+fmt2 = sprintf('| %s |\n', makeFormatStr({'s','e','e','blank','blank','blank','blank'}, cols, ' | '));
 printH1('Superlattice Critical Thickness', cols);
 printSep(cols);
 printHeader(hdrs1, cols);
 printHeader(hdrs2, cols);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'CET (QD Height as QW)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'CET (QD Height as QW)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'Lit (i)', a0SLQDCETi, e0SLQDCETi),1);
@@ -419,7 +419,7 @@ rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'Calc (e)', a0SLQDCETa, e0SLQDCETa),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'Modified CET (QD as Cylinder)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'Modified CET (QD as Cylinder)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Lit (i) QD', a0SLQDmCETcyli, e0SLQDmCETcyli,...
@@ -439,7 +439,7 @@ rpLibPutString(io,'output.log',...
                       optmaxmCETcyla),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
-               sprintf('| %-*s |\n', sum(3+cols), 'Modified CET (QD as Oblate-Hemispheroid)'),1);
+               sprintf('| %-*s |\n', sum(3+cols)-3, 'Modified CET (QD as Oblate-Hemispheroid)'),1);
 printSep(cols);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Lit (i) QD', a0SLQDmCETsphi, e0SLQDmCETsphi,...
@@ -448,15 +448,15 @@ rpLibPutString(io,'output.log',...
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Calc (e) QD', a0SLQDmCETspha, e0SLQDmCETspha,...
                        hcmCETQDspha, maxmCETQDspha, opthcmCETspha,...
-                       optmaxmCETspha),1);),1);
+                       optmaxmCETspha),1);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Lit (i) WL', a0SLWLmCETsphi, e0SLWLmCETsphi,...
                        hcmCETWLsphi, maxmCETWLsphi, opthcmCETsphi,...
-                       optmaxmCETsphi),1);),1);
+                       optmaxmCETsphi),1);
 rpLibPutString(io,'output.log',...
                sprintf(fmt1, 'Calc (e) WL', a0SLWLmCETspha, e0SLWLmCETspha,...
                        hcmCETWLspha, maxmCETWLspha, opthcmCETspha,...
-                       optmaxmCETspha),1);),1);
+                       optmaxmCETspha),1);
 printSep(cols);
 
 % Input values ===========================================================

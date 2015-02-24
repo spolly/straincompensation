@@ -39,7 +39,7 @@ if abs(optmaxmCETQD-optmaxmCETWL)/optmaxmCETWL < acc
      hcOpt=hcmCETQD;
      optmaxmCET=optmaxmCETWL;
 else
-    if optmaxmCETQD < mean([optmaxmCETQD optmaxmCETWL])
+    if optmaxmCETQD < optmaxmCETWL
         m=m+1/(2^n);
     else
         m=m-1/(2^n);

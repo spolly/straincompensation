@@ -1,4 +1,4 @@
-function [ hcOpt, mCETOpt, optmaxmCET] = weightedStrainOpt( n, m,AQD, ASC, aSub, aQD,...
+function [ hcOpt, mCETOpt, optmaxmCET] = weightedStrainOpt( m, n,AQD, ASC, aSub, aQD,...
     aSC, QDHeight, WLThickness, mCET, nu, alpha,lambda,acc )
 %Funtion weightedStrainOpt returns the maximum SL thickness, its related 
 %SC thickness, and themaximum number of superlattice repeat units, 
@@ -7,7 +7,7 @@ function [ hcOpt, mCETOpt, optmaxmCET] = weightedStrainOpt( n, m,AQD, ASC, aSub,
 % Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
-mCETOpt=mCET*(1+n);
+mCETOpt=mCET*(m);
 
 %Effective lattice constant of mCET
 %QD
@@ -39,18 +39,12 @@ if abs(optmaxmCETQD-optmaxmCETWL)/optmaxmCETWL < acc
      hcOpt=hcmCETQD;
      optmaxmCET=optmaxmCETWL;
 else
-    if m==1
-        if optmaxmCETQD < mean([optmaxmCETQD optmaxmCETWL])
-            n=1/(2^m);
-        else
-            n=-1/(2^m);
-        end
-    elseif optmaxmCETQD < mean([optmaxmCETQD optmaxmCETWL])
-        n=n+1/(2^m);
+    if optmaxmCETQD < mean([optmaxmCETQD optmaxmCETWL])
+        m=m+1/(2^n);
     else
-        n=n-1/(2^m);
+        m=m-1/(2^n);
     end
-    m=m+1;
-    [hcOpt, mCETOpt, optmaxmCET]=weightedStrainOpt(n,m,AQD,ASC,aSub,aQD,aSC,QDHeight,WLThickness,mCET,nu,alpha,lambda,acc);
+    n=n+1;
+    [hcOpt, mCETOpt, optmaxmCET]=weightedStrainOpt(m,n,AQD,ASC,aSub,aQD,aSC,QDHeight,WLThickness,mCET,nu,alpha,lambda,acc);
 end
 

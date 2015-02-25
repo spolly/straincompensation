@@ -295,8 +295,8 @@ optmaxmCETcyli=floor(optmaxmCETcyli);
 optmaxmCETcyla=floor(optmaxmCETcyla);
 
 %Calculation of maximum SL repeat units mCET Oblate Hemispheroid
-[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(0,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
-[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(0,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
+[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
+[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
 optmaxmCETsphi=floor(optmaxmCETsphi);
 optmaxmCETspha=floor(optmaxmCETspha);
 

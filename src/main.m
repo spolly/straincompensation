@@ -289,8 +289,8 @@ maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+QDHeight+WLThickness));
 maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+QDHeight+WLThickness));
 
 %Calculation of maximum SL repeat units mCET Cylinder
-[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(0,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
-[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(0,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
+[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
+[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
 optmaxmCETcyli=floor(optmaxmCETcyli);
 optmaxmCETcyla=floor(optmaxmCETcyla);
 

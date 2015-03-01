@@ -30,6 +30,10 @@ for k=1:length(colTypes)
       spl = floor((cols(k)-pres-7)/2);
       spr = cols(k)-spl-pres-7;
       strs{k} = sprintf('%*s%%+0.%ie%*s', spl, '', pres, spr, '');
+    case 'i'
+      spl = floor((cols(k)-pres-6)/2);
+      spr = cols(k)-spl-pres-6;
+      strs{k} = sprintf('%*s%%10i%*s', spl, '', spr, '');
     otherwise
       strs{k} = ctype;
   end

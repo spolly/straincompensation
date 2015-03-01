@@ -100,7 +100,7 @@ end
 %rpUtilsProgress(5, 'Loading data...');
 %rpUtilsProgress(50, 'Half-way there');
 %rpUtilsProgress(100, 'Done');
-
+%%
 % Unit Conversions -----------------------------------------
 QDDensity=QDDen * 1e-16; %Angstrom^-2 {5e-6 A^-2 = 5e10 cm^-2}
 QDDiameter=QDDia * 10; %Angstrom
@@ -247,7 +247,7 @@ end
 
 alpha=pi/3;
 lambda=pi/3;
-
+%%
 %Calculation of critical SL thickness CET
 hcCETi=matthewsblakeslee(1,a0SLQDCETi,e0SLQDCETi,nui,alpha,lambda,0.001); %[A]
 hcCETa=matthewsblakeslee(1,a0SLQDCETa,e0SLQDCETa,nua,alpha,lambda,0.001); %[A]

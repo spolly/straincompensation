@@ -4,7 +4,7 @@ function [a,C11,C12]=getMaterial(IIIV)
 % for III-V compound semiconductors and their alloys," Journal of Applied
 % Physics, vol. 89, no. 11, pp. 5815--5875, Jun. 2001.
 %
-% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% Copyright (C) 2014--2016 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
 switch IIIV

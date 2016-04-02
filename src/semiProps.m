@@ -2,7 +2,7 @@ function [a,C11i,C12i,C11a,C12a] = semiProps(Props, Param)
 % SEMIPROPS returns the parameters for compound semi
 %
 % Adapted from SAMIS (https://github.com/agrede/SAMIS)
-% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% Copyright (C) 2014--2016 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
 Semi = struct;

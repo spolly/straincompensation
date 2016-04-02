@@ -2,7 +2,7 @@
 %
 % Rappture documentation available at http://rapture.org
 %
-% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% Copyright (C) 2014--2016 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
 % ----------------------------------------------------------------------

@@ -2,7 +2,7 @@ function s = printCenter(str, cols)
 % Formats string with padding to put in center of s with len(cols)
 % accepts cell arrays
 %
-% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% Copyright (C) 2014--2016 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
 if iscell(str)

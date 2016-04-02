@@ -15,8 +15,6 @@ io = rpLib(infile);
 
 MProps = loadjson('master.json');
 
-mats = {"Al", "Ga", "In", "Al_(x)Ga_(1-x)", "Al_(x)In_(1-x)", "In_(x)Ga_(1-x)",...
-        "P", "As", "Sb", "As_(y)P_(1-y)", "As_(y)Sb_(1-y)", "Sb_(y)P_(1-y)"};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get input values from Rappture
@@ -38,59 +36,32 @@ str = rpLibGetString(io,'input.number(QDDen).current');
 str = rpLibGetString(io,'input.number(WL).current');
 [WL,err] = rpUnitsConvertDbl(str, 'nm');
 
-% get input value for input.group(Sub).choice(SubIII)
-SubIII = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubIII).current'))}
-
-% get input value for input.group(Sub).choice(SubV)
-SubV = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubV).current'))};
-
-% get input value for input.group(Sub).number(Subx)
-Subx = rpLibGetDouble(io,'input.group(Sub).number(Subx).current');
-if (length(SubIII) < 3)
-  Subx = 1;
-end
-
-% get input value for input.group(Sub).number(Suby)
-Suby = rpLibGetDouble(io,'input.group(Sub).number(Suby).current');
-if (length(SubV) < 3)
-  Suby = 1;
-end
-
-% get input value for input.group(QD).choice(QDIII)
-QDIII = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDIII).current'))};
-
-% get input value for input.group(QD).choice(QDV)
-QDV = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDV).current'))};
-
-% get input value for input.group(QD).number(QDx)
-QDx = rpLibGetDouble(io,'input.group(QD).number(QDx).current');
-if (length(QDIII) < 3)
-  QDx = 1;
-end
-
-% get input value for input.group(QD).number(QDy)
-QDy = rpLibGetDouble(io,'input.group(QD).number(QDy).current');
-if (length(QDV) < 3)
-  QDy = 1;
-end
-
-% get input value for input.group(SC).choice(SCIII)
-SCIII = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCIII).current'))};
-
-% get input value for input.group(SC).choice(SCV)
-SCV = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCV).current'))};
-
-% get input value for input.group(SC).number(SCx)
-SCx = rpLibGetDouble(io,'input.group(SC).number(SCx).current');
-if (length(SCIII) < 3)
-  SCx = 1;
-end
-
-% get input value for input.group(SC).number(SCy)
-SCy = rpLibGetDouble(io,'input.group(SC).number(SCy).current');
-if (length(SCV) < 3)
-  SCy = 1;
-end
+% get input values for layers
+lyrs = {'Sub', 'QD', 'SC'};
+lyrParam = {};
+tmp = {'A','B'};
+for k0=1:length(lyrs)
+  lyrParam.(lyrs{k0}) = struct;
+  lyrParam.(lyrs{k0}).groupA = {'Al', 'Ga', 'In'};
+  lyrParam.(lyrs{k0}).groupB = {'P', 'As', 'Sb'};
+  lyrParam.(lyrs{k0}).weightsA = [0, 0, 0];
+  lyrParam.(lyrs{k0}).weightsB = [0, 0, 0];
+  lyrParam.(lyrs{k0}).crystalStructure = 'ZBB';
+  for k=1:length(tmp)
+    tdbl = zeros(1,3);
+    tmplc = tolower(tmp{k});
+    elmnts = lyrParam.(lyrs{k0}).(strcat('group',tmp{k}));
+    for l=1:length(elmnts)
+      [tdbl(l),err] = rpLibGetDouble(lib, ...
+                        strcat('input.group(', lyrs{k0}, ...
+                               ')group(composition).group(group_',...
+                               tmplc,').number(',elmnts{l},').current'));
+    endfor
+    lyrParam.(lyrs{k0}).(strcat('group',tmp{k})) = lyrParam.(lyrs{k0}).(...
+                                                       strcat('group',tmp{k}))(logical(tdbl>0));
+    lyrParam.(lyrs{k0}).(strcat('weights',tmp{k})) = tdbl(logical(tdbl>0));
+  endfor
+endfor
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,14 +81,11 @@ QDHeight=QDH * 10; %Angstrom
 WLThickness=WL * 10; %Angstrom
 
 % Parse Material Selection ---------------------------------
-[AC,BC,AD,BD] = parseSelection(SubIII, SubV);
-[aSub,c11iSub,c12iSub,c11aSub,c12aSub] = calcMaterial(AC,AD,Subx,BC,BD,Suby);
+[aSub,c11iSub,c12iSub,c11aSub,c12aSub] = semiProps(lyrParam.Sub, MProps);
 
-[AC,BC,AD,BD] = parseSelection(QDIII, QDV);
-[aQD,c11iQD,c12iQD,c11aQD,c12aQD] = calcMaterial(AC,AD,QDx,BC,BD,QDy);
+[aQD,c11iQD,c12iQD,c11aQD,c12aQD] = semiProps(lyrParam.QD, MProps);
 
-[AC,BC,AD,BD] = parseSelection(SCIII, SCV);
-[aSC,c11iSC,c12iSC,c11aSC,c12aSC] = calcMaterial(AC,AD,SCx,BC,BD,SCy);
+[aSC,c11iSC,c12iSC,c11aSC,c12aSC] = semiProps(lyrParam.SC, MProps);
 
 
 % Stiffness Calculations ----------------------------------

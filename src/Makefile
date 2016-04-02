@@ -4,7 +4,8 @@ RELEASE_DIR = ../bin
 SOURCE_DIR = .
 MAIN_FILE = $(SOURCE_DIR)/main.m
 
-FILES = `./octdep.pl main.m`
+FILES = `./octdep.pl main.m` \
+	$(SOURCE_DIR)/master.json
 
 all:
 

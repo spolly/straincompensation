@@ -13,6 +13,8 @@
 % the file name comes in from the command-line via variable 'infile'
 io = rpLib(infile);
 
+MProps = loadjson('master.json');
+
 mats = {"Al", "Ga", "In", "Al_(x)Ga_(1-x)", "Al_(x)In_(1-x)", "In_(x)Ga_(1-x)",...
         "P", "As", "Sb", "As_(y)P_(1-y)", "As_(y)Sb_(1-y)", "Sb_(y)P_(1-y)"};
 

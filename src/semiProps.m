@@ -12,7 +12,7 @@ if (length(Props.groupB)<1)
   % Only assuming one group A for now
   mat = Props.groupA{1};
   Semi = strainProps(Param.(Props.crystalStructure).(mat));
-elseif (sum(Props.weightsA>0) == 1 && sum(Props.weightsB>0) == 1)
+elseif (length(Props.groupA)+length(Props.groupB)<3)
   % Binary Assumed
   mat = strcat(Props.groupA{find(Props.weightsA>0)},...
                Props.groupB{find(Props.weightsB>0)});

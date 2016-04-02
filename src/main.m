@@ -38,7 +38,7 @@ str = rpLibGetString(io,'input.number(WL).current');
 
 % get input values for layers
 lyrs = {'Sub', 'QD', 'SC'};
-lyrParam = {};
+lyrParam = struct;
 tmp = {'A','B'};
 for k0=1:length(lyrs)
   lyrParam.(lyrs{k0}) = struct;
@@ -52,9 +52,9 @@ for k0=1:length(lyrs)
     tmplc = tolower(tmp{k});
     elmnts = lyrParam.(lyrs{k0}).(strcat('group',tmp{k}));
     for l=1:length(elmnts)
-      [tdbl(l),err] = rpLibGetDouble(lib, ...
+      [tdbl(l),err] = rpLibGetDouble(io, ...
                         strcat('input.group(', lyrs{k0}, ...
-                               ')group(composition).group(group_',...
+                               ').group(group_',...
                                tmplc,').number(',elmnts{l},').current'));
     endfor
     lyrParam.(lyrs{k0}).(strcat('group',tmp{k})) = lyrParam.(lyrs{k0}).(...
@@ -440,30 +440,29 @@ printH1('Input values', cols);
 printSep(cols);
 printHeader(hdrs, cols);
 printSep(cols);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'Substrate (III)', SubIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'Substrate (V)', SubV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'Substrate (x)', Subx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'Substrate (y)', Suby, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'QD (III)', QDIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'QD (V)', QDV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'QD (x)', QDx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'QD (y)', QDy, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'SC (III)', SCIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'SC (V)', SCV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'SC (x)', SCx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'SC (y)', SCy, ''),1);
+
+tmp = {'A', 'B'};
+lyrNms = {'Substrate', 'Quantum Dot', 'Strain Comp.'}
+for k0=1:length(lyrs)
+  mat = '';
+  lyr = lyrs{k0};
+  P = lyrParam.(lyr);
+  for k=1:2
+    elmnts = P.(strcat('group', tmp{k}));
+    if length(elmnts) > 1
+      for l=1:length(elmnts)
+        ws = sprintf('%0.6f', P.(strcat('weights', tmp{k}))(l));
+        mat = strcat(mat, elmnts{l}, ...
+                     substr(ws, 1, length(ws)-1-regexp(ws, '[0]*$')));
+      endfor
+    else
+      mat = strcat(mat, elmnts{1});
+    endif
+  endfor
+  rpLibPutString(io, 'output.log',...
+                 sprintf(fmt1, lyrNms{k0}, mat),1);
+endfor
+
 rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'QD Diameter', QDDia, 'nm'),1);
 rpLibPutString(io,'output.log',...

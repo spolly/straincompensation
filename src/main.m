@@ -453,7 +453,7 @@ for k0=1:length(lyrs)
       for l=1:length(elmnts)
         ws = sprintf('%0.6f', P.(strcat('weights', tmp{k}))(l));
         mat = strcat(mat, elmnts{l}, ...
-                     substr(ws, 1, length(ws)-1-regexp(ws, '[0]*$')));
+                     substr(ws, 1, regexp(ws, '[0]*$')-1));
       endfor
     else
       mat = strcat(mat, elmnts{1});

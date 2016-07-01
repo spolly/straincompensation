@@ -259,14 +259,14 @@ maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+QDHeight+WLThickness));
 maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+QDHeight+WLThickness));
 
 %Calculation of maximum SL repeat units mCET Cylinder
-[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
-[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
+[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(1,0,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
+[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(1,0,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
 optmaxmCETcyli=floor(optmaxmCETcyli);
 optmaxmCETcyla=floor(optmaxmCETcyla);
 
 %Calculation of maximum SL repeat units mCET Oblate Hemispheroid
-[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
-[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
+[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(1,0,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
+[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(1,0,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
 optmaxmCETsphi=floor(optmaxmCETsphi);
 optmaxmCETspha=floor(optmaxmCETspha);
 

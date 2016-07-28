@@ -2,7 +2,7 @@
 %
 % Rappture documentation available at http://rapture.org
 %
-% Copyright (C) 2014--2015 Stephen J. Polly and Alex J. Grede
+% Copyright (C) 2014--2016 Stephen J. Polly and Alex J. Grede
 % GPL v3, See LICENSE for details
 % This function is part of straincomp (https://nanohub.org/resources/straincomp)
 % ----------------------------------------------------------------------
@@ -13,8 +13,8 @@
 % the file name comes in from the command-line via variable 'infile'
 io = rpLib(infile);
 
-mats = {"Al", "Ga", "In", "Al_(x)Ga_(1-x)", "Al_(x)In_(1-x)", "In_(x)Ga_(1-x)",...
-        "P", "As", "Sb", "As_(y)P_(1-y)", "As_(y)Sb_(1-y)", "Sb_(y)P_(1-y)"};
+MProps = loadjson('master.json');
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get input values from Rappture
@@ -36,59 +36,32 @@ str = rpLibGetString(io,'input.number(QDDen).current');
 str = rpLibGetString(io,'input.number(WL).current');
 [WL,err] = rpUnitsConvertDbl(str, 'nm');
 
-% get input value for input.group(Sub).choice(SubIII)
-SubIII = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubIII).current'))}
-
-% get input value for input.group(Sub).choice(SubV)
-SubV = mats{str2num(rpLibGetString(io,'input.group(Sub).choice(SubV).current'))};
-
-% get input value for input.group(Sub).number(Subx)
-Subx = rpLibGetDouble(io,'input.group(Sub).number(Subx).current');
-if (length(SubIII) < 3)
-  Subx = 1;
-end
-
-% get input value for input.group(Sub).number(Suby)
-Suby = rpLibGetDouble(io,'input.group(Sub).number(Suby).current');
-if (length(SubV) < 3)
-  Suby = 1;
-end
-
-% get input value for input.group(QD).choice(QDIII)
-QDIII = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDIII).current'))};
-
-% get input value for input.group(QD).choice(QDV)
-QDV = mats{str2num(rpLibGetString(io,'input.group(QD).choice(QDV).current'))};
-
-% get input value for input.group(QD).number(QDx)
-QDx = rpLibGetDouble(io,'input.group(QD).number(QDx).current');
-if (length(QDIII) < 3)
-  QDx = 1;
-end
-
-% get input value for input.group(QD).number(QDy)
-QDy = rpLibGetDouble(io,'input.group(QD).number(QDy).current');
-if (length(QDV) < 3)
-  QDy = 1;
-end
-
-% get input value for input.group(SC).choice(SCIII)
-SCIII = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCIII).current'))};
-
-% get input value for input.group(SC).choice(SCV)
-SCV = mats{str2num(rpLibGetString(io,'input.group(SC).choice(SCV).current'))};
-
-% get input value for input.group(SC).number(SCx)
-SCx = rpLibGetDouble(io,'input.group(SC).number(SCx).current');
-if (length(SCIII) < 3)
-  SCx = 1;
-end
-
-% get input value for input.group(SC).number(SCy)
-SCy = rpLibGetDouble(io,'input.group(SC).number(SCy).current');
-if (length(SCV) < 3)
-  SCy = 1;
-end
+% get input values for layers
+lyrs = {'Sub', 'QD', 'SC'};
+lyrParam = struct;
+tmp = {'A','B'};
+for k0=1:length(lyrs)
+  lyrParam.(lyrs{k0}) = struct;
+  lyrParam.(lyrs{k0}).groupA = {'Al', 'Ga', 'In'};
+  lyrParam.(lyrs{k0}).groupB = {'P', 'As', 'Sb'};
+  lyrParam.(lyrs{k0}).weightsA = [0, 0, 0];
+  lyrParam.(lyrs{k0}).weightsB = [0, 0, 0];
+  lyrParam.(lyrs{k0}).crystalStructure = 'ZBB';
+  for k=1:length(tmp)
+    tdbl = zeros(1,3);
+    tmplc = tolower(tmp{k});
+    elmnts = lyrParam.(lyrs{k0}).(strcat('group',tmp{k}));
+    for l=1:length(elmnts)
+      [tdbl(l),err] = rpLibGetDouble(io, ...
+                        strcat('input.group(', lyrs{k0}, ...
+                               ').group(group_',...
+                               tmplc,').number(',elmnts{l},').current'));
+    endfor
+    lyrParam.(lyrs{k0}).(strcat('group',tmp{k})) = lyrParam.(lyrs{k0}).(...
+                                                       strcat('group',tmp{k}))(logical(tdbl>0));
+    lyrParam.(lyrs{k0}).(strcat('weights',tmp{k})) = tdbl(logical(tdbl>0));
+  endfor
+endfor
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,14 +81,11 @@ QDHeight=QDH * 10; %Angstrom
 WLThickness=WL * 10; %Angstrom
 
 % Parse Material Selection ---------------------------------
-[AC,BC,AD,BD] = parseSelection(SubIII, SubV);
-[aSub,c11iSub,c12iSub,c11aSub,c12aSub] = calcMaterial(AC,AD,Subx,BC,BD,Suby);
+[aSub,c11iSub,c12iSub,c11aSub,c12aSub] = semiProps(lyrParam.Sub, MProps);
 
-[AC,BC,AD,BD] = parseSelection(QDIII, QDV);
-[aQD,c11iQD,c12iQD,c11aQD,c12aQD] = calcMaterial(AC,AD,QDx,BC,BD,QDy);
+[aQD,c11iQD,c12iQD,c11aQD,c12aQD] = semiProps(lyrParam.QD, MProps);
 
-[AC,BC,AD,BD] = parseSelection(SCIII, SCV);
-[aSC,c11iSC,c12iSC,c11aSC,c12aSC] = calcMaterial(AC,AD,SCx,BC,BD,SCy);
+[aSC,c11iSC,c12iSC,c11aSC,c12aSC] = semiProps(lyrParam.SC, MProps);
 
 
 % Stiffness Calculations ----------------------------------
@@ -289,14 +259,14 @@ maxmCETWLsphi=floor(hcmCETWLsphi/(mCETsphi+QDHeight+WLThickness));
 maxmCETWLspha=floor(hcmCETWLspha/(mCETspha+QDHeight+WLThickness));
 
 %Calculation of maximum SL repeat units mCET Cylinder
-[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
-[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
+[opthcmCETcyli, mCETcylOpti, optmaxmCETcyli]=weightedStrainOpt(1,0,AQDi,ASCi,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyli,nui,alpha,lambda,0.001);
+[opthcmCETcyla, mCETcylOpta, optmaxmCETcyla]=weightedStrainOpt(1,0,AQDa,ASCa,aSub,aQD,aSC,QDHeight,WLThickness,mCETcyla,nua,alpha,lambda,0.001);
 optmaxmCETcyli=floor(optmaxmCETcyli);
 optmaxmCETcyla=floor(optmaxmCETcyla);
 
 %Calculation of maximum SL repeat units mCET Oblate Hemispheroid
-[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(1,1,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
-[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(1,1,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
+[opthcmCETsphi, mCETsphOpti, optmaxmCETsphi]=weightedStrainOpt(1,0,AQDi,ASCi,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETsphi,nui,alpha,lambda,0.001);
+[opthcmCETspha, mCETsphOpta, optmaxmCETspha]=weightedStrainOpt(1,0,AQDa,ASCa,aSub,aQD,aSC,QDHeight+WLThickness,WLThickness,mCETspha,nua,alpha,lambda,0.001);
 optmaxmCETsphi=floor(optmaxmCETsphi);
 optmaxmCETspha=floor(optmaxmCETspha);
 
@@ -470,30 +440,29 @@ printH1('Input values', cols);
 printSep(cols);
 printHeader(hdrs, cols);
 printSep(cols);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'Substrate (III)', SubIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'Substrate (V)', SubV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'Substrate (x)', Subx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'Substrate (y)', Suby, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'QD (III)', QDIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'QD (V)', QDV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'QD (x)', QDx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'QD (y)', QDy, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'SC (III)', SCIII),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt1, 'SC (V)', SCV),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'SC (x)', SCx, ''),1);
-rpLibPutString(io,'output.log',...
-               sprintf(fmt2, 'SC (y)', SCy, ''),1);
+
+tmp = {'A', 'B'};
+lyrNms = {'Substrate', 'Quantum Dot', 'Strain Comp.'}
+for k0=1:length(lyrs)
+  mat = '';
+  lyr = lyrs{k0};
+  P = lyrParam.(lyr);
+  for k=1:2
+    elmnts = P.(strcat('group', tmp{k}));
+    if length(elmnts) > 1
+      for l=1:length(elmnts)
+        ws = sprintf('%0.6f', P.(strcat('weights', tmp{k}))(l));
+        mat = strcat(mat, elmnts{l}, ...
+                     substr(ws, 1, regexp(ws, '[0]*$')-1));
+      endfor
+    else
+      mat = strcat(mat, elmnts{1});
+    endif
+  endfor
+  rpLibPutString(io, 'output.log',...
+                 sprintf(fmt1, lyrNms{k0}, mat),1);
+endfor
+
 rpLibPutString(io,'output.log',...
                sprintf(fmt2, 'QD Diameter', QDDia, 'nm'),1);
 rpLibPutString(io,'output.log',...

@@ -6,6 +6,7 @@ dots or quantum wells in the III-V material system
 This is a git working repo. Releases and more information can be found
 at https://nanohub.org/tools/straincomp/
 
+
 ## References ##
 1. I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, "Band parameters
    for III-V compound semiconductors and their alloys", Journal of
@@ -43,3 +44,10 @@ at https://nanohub.org/tools/straincomp/
    x-ray rocking curves", Crystal Growth &amp; Design, vol. 2, no. 4,
    pp. 287&ndash;292, Jul. 1, 2002, doi:
    [10.1021/cg025502y](http://dx.doi.org/10.1021/cg025502y).
+
+
+## Software dependencies ##
+
+* [JSONLAB](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi?jsonlab) (v1.2 Included in `src/jsonlab/`)
+* [Rappture](http://www.rapture.org) Needed for GUI
+* [SAMIS] Using some material property calculations (included)

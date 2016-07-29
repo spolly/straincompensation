@@ -265,7 +265,7 @@
                 <label>Wetting Layer Thickness</label>
                 <description>Thickness of the QD wetting layer.</description>
             </about>
-            <default>1</default>
+            <default>0.3</default>
             <units>nm</units>
             <min>0.01</min>
             <max>1000</max>
